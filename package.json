@@ -1,0 +1,27 @@
+{
+  "name": "store",
+  "version": "1.0.0",
+  "description": "store app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Raanan Adut",
+  "license": "ISC",
+  "dependencies": {
+    "async": "*",
+    "body-parser": "*",
+    "connect-mongo": "*",
+    "cookie-parser": "*",
+    "express": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "express-session": "*",
+    "mongoose": "*"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vr70147/store.git"
+  }
+}

@@ -1,0 +1,25 @@
+<div class="container-fluid">
+	<div class="row">
+<section class="col-md-12 welcomeTitle" >
+	<h2 class="col-md-8">Welcome to our Store!</h2>
+	<h5 class="col-md-8">TopElectric Ltd. is one of the state of the art consultancy firm engaged in providing competent and cost effective technical services to the Power Sector in general and the Power Transmission sector in particular. It is one of the leading consultancy firm providing electrical, mechanical, civil structural, electronics, instrumentation engineering services under one roof.The Company Was Founded On 1st April 2010</h5>
+</section>
+
+	<section class="col-md-12 col-sm-12 productsSection">
+		<div class="col-md-3 item">
+			<div class="col-md-12 col-sm-3 col-xs-12 item" ng-repeat="product in products | filter: search">
+				<div class="title"><h2>{{product.name}}</h2></div>
+				<div class="img"><img ng-src="{{product.image}}"></div>
+				<div class="price"><h4><span class="bold">Price: </span>{{product.price}}</h4></div>
+				<div class="serial"><h5><span class="bold">Serial no: </span>{{product.serial}}</h5></div>
+			
+		<!-- 					<div class="content"><h4>{{product.content}}</h4></div>
+		-->					
+				<div class="qty"><h5><span class="bold">quantity: </span>{{product.quantity}}</h5></div>
+				<div class="addToCartBtn"><button class="btn btn-primary">Add to cart</button></div>
+
+			</div>
+		</div>
+
+	</section>
+</div>
