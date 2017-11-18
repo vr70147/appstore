@@ -5,7 +5,7 @@
 	margin: 0;
 
 }
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="number"], select {
 	width: 80%;
 	height: 45px;
 	border-radius: 5px;
@@ -124,7 +124,7 @@ ul {
 	list-style-type: none;
     text-align: center;
     margin: 0 auto;
-    display:table-cell;
+    display: table-cell;
 }
 li {
 	list-style: none;
@@ -135,5 +135,10 @@ li {
 	margin-top: 3%;
 
 }
-
+.item img {
+	margin: 0 auto;
+}
+.ul {
+	display: inline-block;
+}
 

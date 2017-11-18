@@ -14,4 +14,8 @@ app.config(['$routeProvider', $routeProvider => {
     templateUrl: "register.html",
     controller: "registerController"
     })
+   .when('/product', {
+    templateUrl: "product.html",
+    controller: "productController"
+    })
 }]);

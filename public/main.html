@@ -1,13 +1,20 @@
 <div class="container-fluid">
 	<div class="row">
 		<section class="col-md-12 welcomeTitle" >
-			<ul ng-repeat="category in categories">
-				<li>|&nbsp &nbsp{{category.name}} &nbsp &nbsp</li>
-			</ul>
+			<div class="col-md-8 float-left ul">
+				<ul ng-repeat="category in categories">
+					<li>|&nbsp &nbsp{{category.name}} &nbsp &nbsp</li>
+				</ul>
+			</div>
+			<div class="col-sm-3 searchQuery float-right">
+					<input type="text" class="search" placeholder="Search..." ng-model="search"/>
+				</div>
 		</section>
 		<section class="col-md-9 col-sm-12 productsSection">
-			<div class="item col-md-3">
-				<h2>{{products.name}}</h2>
+			<div class="item col-md-3" ng-repeat="product in products | filter: search">
+				<img src="{{product.image}}" height="300" width="auto">
+				<h4>{{product.name}}</h4>
+				<div class="addToCartBtn"><button class="btn btn-primary">Add to cart</button></div>
 			</div>
 		</section>
 		<section class="col-md-3 col-sm-12 cartSection">
@@ -15,11 +22,4 @@
 
 	</div>
 </div>
-
-
-
-
-
-
-<!--<div class="col-md-12 col-sm-3 col-xs-12 item" ng-repeat="product in products | filter: search"> -->
-			<div class="addToCartBtn"><button class="btn btn-primary">Add to cart</button></div>
+			

@@ -30,11 +30,14 @@ router.delete('/del-product/:id', delProduct , (req,res) => {
 router.get('/category/:item', getCategory, ( req, res ) => {
 	return res.send(req.data);
 });
+
 router.get('/category', getAllCategories, ( req, res ) => {
 	return res.send(req.data);
 });
+
 router.put('/category', addCategory, ( req, res ) => {
 	return res.send(req.data);
-} )
+});
+
 
 module.exports = router;

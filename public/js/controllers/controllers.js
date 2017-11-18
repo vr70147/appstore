@@ -11,37 +11,52 @@ app.controller('indexController', [ '$scope', '$http', function( $scope, $http )
 	});
 }]);
 
-app.controller('mainController', [ '$scope', '$http', function( $scope, $http ) {
-	$http.get('/getAll').then( data => {
-		$scope.products = data.data;
-	});
-	$http.get('/category').then( response => {
-			$scope.categories = response.data;
-		
-	})
+app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
+	const successHandler = res => {
+		$scope.products = res.data;
+    }
+    const failureHandler = res => {
+		$scope.products = "no products are avaliable";
+    }
+	HTTP.ajax('GET', '/getAll', false, successHandler, failureHandler);
+
+	const successHandler2 = res => {
+		$scope.categories = res.data;
+    }
+    const failureHandler2 = res => {
+		$scope.products = "no categories are avaliable";
+    }
+	HTTP.ajax('GET','/category', false, successHandler2, failureHandler2 );
 }]);
 
-app.controller('loginController', [ '$scope', '$http', function( $scope, $http ) {
+app.controller('loginController', [ '$scope', 'HTTP', function( $scope ) {
 	const loc = location.href;
-			const error = loc.split('=')[1];
-			if (error == 1) {
-				$scope.error = "username or password incorrect";
-				}
+	const error = loc.split('=')[1];
+	if (error == 1) {
+		$scope.error = "username or password incorrect";
+	}
 	$scope.submitLogin = () => {
 		$scope.error = '';
-		$http.post('/users/login', $scope.user).then( response => {
-			});
-			
-			
-		
 	};
 }]);
 
-app.controller('registerController',[ '$scope', '$http', function( $scope, $http ) {
-	$scope.submitLogin = () => {
-		$http.post('/users/register', $scope.user).then( response => {
-			console.log(response.data);
-		});
+app.controller('registerController',[ '$scope', function( $scope ) {
+	$scope.registerSubmit = () => {
+		console.log("register succeed");
+	};
+}]);
+
+app.controller('productController', ['$scope', 'HTTP', function( $scope, HTTP ) {
+	const successHandler2 = res => {
+		$scope.categories = res.data;
+    }
+    const failureHandler2 = res => {
+		$scope.products = "no categories are avaliable";
+    }
+	HTTP.ajax('GET','/category', false, successHandler2, failureHandler2 );
+
+	$scope.submitProducts = () => {
+		HTTP.ajax('POST','/add-product',$scope.product, false, false );
 	};
 }]);
 
