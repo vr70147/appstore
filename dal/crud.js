@@ -1,5 +1,6 @@
 const express = require('express');
 const Product = require('../models/product');
+const Category = require('../models/category');
 
 const getAllProducts = ( req, res, next ) => {
 	Product.find({}, ( err, products ) => {
@@ -11,9 +12,11 @@ const getAllProducts = ( req, res, next ) => {
 const createProduct = ( req, res, next ) => {
 	const newProduct = new Product( req.body );
 	newProduct.save(( err, data ) => {
-		if ( err ) return res.json( err )
-		req.data = data;
-		return next();
+		Category.findOne(data).populate( Category.name ).exec( ( err, data ) => {
+			if ( err ) return res.json( err )
+			req.data = data;
+			return next();
+		});
 	});
 };
 
@@ -41,6 +44,16 @@ const deleteProduct = ( req, res, next ) => {
 	return next();
 
 };
+const createCategory = ( req, res, next ) => {
+	const newCategory = new Category( req.body );
+	newCategory.save(( err, data ) => {
+		if ( err ) return res.json( err )
+		req.data = data;
+		return next();
+	});
+}
 
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts };
+
+
+const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, createCategory };
 module.exports = MiddleWares;

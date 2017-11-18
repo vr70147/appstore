@@ -6,6 +6,7 @@ const getProducts = MiddleWares.getAllProducts;
 const delProduct = MiddleWares.deleteProduct;
 const editProduct = MiddleWares.updateProduct;
 const addProduct = MiddleWares.createProduct;
+const addCategory = MiddleWares.createCategory;
 
 router.get('/getAll', getProducts, ( req, res ) => {
 	return res.send( req.data );
@@ -22,5 +23,8 @@ router.patch('/edit-product/:id', editProduct ,( req, res ) => {
 router.delete('/del-product/:id', delProduct , (req,res) => {
 	return res.send( req.data );
 });
+router.put('/category', addCategory, ( req, res ) => {
+	return res.send(req.data);
+})
 
 module.exports = router;
