@@ -14,8 +14,4 @@ app.config(['$routeProvider', $routeProvider => {
     templateUrl: "register.html",
     controller: "registerController"
     })
-   .when('/cart', {
-    templateUrl: "cart.html",
-    controller: "cartController"
-    });
 }]);

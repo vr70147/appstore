@@ -12,11 +12,9 @@ const getAllProducts = ( req, res, next ) => {
 const createProduct = ( req, res, next ) => {
 	const newProduct = new Product( req.body );
 	newProduct.save(( err, data ) => {
-		Category.findOne(data).populate( Category.name ).exec( ( err, data ) => {
-			if ( err ) return res.json( err )
-			req.data = data;
-			return next();
-		});
+		if ( err ) return res.json( err )
+		req.data = data;
+		return next();
 	});
 };
 
@@ -44,6 +42,17 @@ const deleteProduct = ( req, res, next ) => {
 	return next();
 
 };
+const findCategory = ( req, res ) => {
+	Product.find({ category: req.params.item }, ( err, product ) => {
+		return res.json( product );
+	});
+};
+const findAllCategories = ( req, res ) => {
+	Category.find({}, ( err, categories ) => {
+        if (err) return res.status( 500 ).send("There was a problem finding the categories.");
+        res.status( 200 ).send( categories );
+	})
+};
 const createCategory = ( req, res, next ) => {
 	const newCategory = new Category( req.body );
 	newCategory.save(( err, data ) => {
@@ -51,9 +60,10 @@ const createCategory = ( req, res, next ) => {
 		req.data = data;
 		return next();
 	});
-}
+};
 
 
 
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, createCategory };
+
+const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findCategory, findAllCategories, createCategory };
 module.exports = MiddleWares;

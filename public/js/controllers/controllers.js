@@ -15,6 +15,10 @@ app.controller('mainController', [ '$scope', '$http', function( $scope, $http ) 
 	$http.get('/getAll').then( data => {
 		$scope.products = data.data;
 	});
+	$http.get('/category').then( response => {
+			$scope.categories = response.data;
+		
+	})
 }]);
 
 app.controller('loginController', [ '$scope', '$http', function( $scope, $http ) {
