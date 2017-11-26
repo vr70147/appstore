@@ -20,6 +20,7 @@ const passportHandlers = {
   serializeUser: (user, done) => done(null, user),
   deserializeUser: (user, done) => done(null, user),
   validatedUser: (req, res, next) => {
+
     if (req.isAuthenticated()) {
       return next();
     }

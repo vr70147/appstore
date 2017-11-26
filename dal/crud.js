@@ -4,17 +4,19 @@ const Category = require('../models/category');
 
 const getAllProducts = ( req, res, next ) => {
 	Product.find({}).populate('category').exec( ( err, category ) => {
-		if (err) return res.status( 500 ).send("There was a problem finding the product.");
-        res.status( 200 ).send( products );
-	}) 
+		if (err){ return console.log(err)};
+		res.status(200).json(category);
+	});
 };
 
 const createProduct = ( req, res, next ) => {
 	const newProduct = new Product( req.body );
 	newProduct.save(( err, data ) => {
-		if ( err ) return res.json( err )
-		req.data = data;
-		return next();
+		Product.findOne(data).populate('category').exec( ( err, choosenCategory ) => {
+			if ( err ) {return console.log(err)};
+			res.json(choosenCategory);
+			return next();
+		});
 	});
 };
 
@@ -42,17 +44,21 @@ const deleteProduct = ( req, res, next ) => {
 	return next();
 
 };
-const findCategory = ( req, res ) => {
-	Product.find({ category: req.params.item }, ( err, product ) => {
-		return res.json( product );
-	});
+const findAllCategories = ( req, res, next ) => {
+	Category.find({}).populate('_id').exec( ( err, product ) => {
+		if (err){ return console.log(err)};
+		res.status(200).json(product);
+	}) 
 };
-const findAllCategories = ( req, res ) => {
-	Category.find({}, ( err, categories ) => {
-        if (err) return res.status( 500 ).send("There was a problem finding the categories.");
-        res.status( 200 ).send( categories );
-	})
+
+const productsPerCategory = ( req, res, next ) => {
+	Product.find({ category: req.params.id }).populate('category').exec( ( err, products ) => {
+		if (err){ return console.log(err)};
+		res.status(200).json(products);
+		return next();
+	}) 
 };
+
 const createCategory = ( req, res, next ) => {
 	const newCategory = new Category( req.body );
 	newCategory.save(( err, data ) => {
@@ -65,5 +71,5 @@ const createCategory = ( req, res, next ) => {
 
 
 
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findCategory, findAllCategories, createCategory };
+const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory };
 module.exports = MiddleWares;

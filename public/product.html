@@ -9,7 +9,7 @@
 				<input type="text" ng-model="product.image" placeholder="Enter image url"/>
 				<select ng-model="product.category">
 					<option>Choose category</option>
-					<option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</option>
+					<option ng-repeat="category in categories" value="{{category._id}}">{{category.name}}</option>
 				</select>
 				<button class="loginBtn btn btn-primary" ng-click="submitProducts()">Create</button> 
 			</section>

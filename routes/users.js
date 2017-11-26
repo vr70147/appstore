@@ -3,12 +3,6 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 
-// router.get('/login', ( req, res ) => {
-// 	return res.status(400).send({
-//    		message: 'This is an error!'
-// 	});
-// });
-
 router.get('/register', ( req, res ) => {
 	return res.redirect('/register.html');
 });
@@ -23,8 +17,6 @@ router.post('/logout', ( req, res ) => {
   })
   return res.redirect('/');
 });
-
-
 
 router.post('/login', passport.authenticate('local', {
 	successRedirect : '/', 
