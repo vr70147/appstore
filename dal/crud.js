@@ -3,10 +3,10 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 
 const getAllProducts = ( req, res, next ) => {
-	Product.find({}, ( err, products ) => {
-        if (err) return res.status( 500 ).send("There was a problem finding the product.");
+	Product.find({}).populate('category').exec( ( err, category ) => {
+		if (err) return res.status( 500 ).send("There was a problem finding the product.");
         res.status( 200 ).send( products );
-	})
+	}) 
 };
 
 const createProduct = ( req, res, next ) => {
