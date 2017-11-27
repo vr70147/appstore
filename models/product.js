@@ -6,6 +6,7 @@ const ProductSchema = new Schema({
 	name: String,
 	image: String,
 	price: Number,
+	quantity: Number,
 	category: { type: Schema.Types.ObjectId, ref: 'categories'}
 });
 

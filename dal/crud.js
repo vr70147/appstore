@@ -1,6 +1,8 @@
 const express = require('express');
 const Product = require('../models/product');
 const Category = require('../models/category');
+const CartItem = require('../models/product-from-cart');
+const Cart = require('../models/cart');
 
 const getAllProducts = ( req, res, next ) => {
 	Product.find({}).populate('category').exec( ( err, category ) => {
@@ -68,8 +70,29 @@ const createCategory = ( req, res, next ) => {
 	});
 };
 
+const addItemToCart = ( req, res, next ) => {
+	const newCartItem = new CartItem( req.body );
+	newCartItem.save(( err, data ) => {
+		console.log(err)
+		CartItem.findOne( data ).populate('_id').populate('price').populate('quantity').exec( ( err, item ) => {
+			if (err){ return console.log(err)};
+			res.status(200).json(item);
+			return next();
+		});
+	});
+};
+
+const createCart = ( req, res, next ) => {
+	const newCart = new Cart( req.body );
+	newCart.save( ( err, data ) => {
+		if (err) return res.json( err );
+		req.data = data;
+		return next();
+	});
+};
 
 
 
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory };
+
+const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory, addItemToCart, createCart };
 module.exports = MiddleWares;
