@@ -3,6 +3,10 @@ const app = angular.module('app', ['ngRoute', 'ngCookies']);
 app.config(['$routeProvider', $routeProvider => {
    $routeProvider
    .when('/', {
+    templateUrl: "login.html",
+    controller: "loginController"
+   })
+   .when('/main', {
     templateUrl: "main.html",
     controller: "mainController"
    })
@@ -14,7 +18,7 @@ app.config(['$routeProvider', $routeProvider => {
     templateUrl: "register.html",
     controller: "registerController"
     })
-   .when('/product', {
+   .when('/admin', {
     templateUrl: "product.html",
     controller: "productController"
     })

@@ -1,5 +1,5 @@
 
-app.controller('indexController', [ '$scope', '$http', function( $scope, $http )  {
+app.controller('indexController', [ '$scope', '$http','$location', function( $scope, $http, $location)  {
 
 	$http.get('/users/session').then( data => {
 		if( data.data.passport ) {
@@ -8,25 +8,18 @@ app.controller('indexController', [ '$scope', '$http', function( $scope, $http )
 		}
 		$scope.username = "guess";
 		$scope.login = true;
+		$location.path('/');
 	});
 }]);
 
 app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
-	const successHandler = res => {
-		$scope.products = res.data;
-    }
-    const failureHandler = res => {
-		$scope.products = "no products are avaliable";
-    }
-	HTTP.ajax('GET', '/getAll', false, successHandler, failureHandler);
+	HTTP.ajax('GET', '/getAll', false).then( response => {
+		$scope.products = response;
+	});
 
-	const successHandler2 = res => {
-		$scope.categories = res.data;
-    }
-    const failureHandler2 = res => {
-		$scope.products = "no categories are avaliable";
-    }
-	HTTP.ajax('GET','/category', false, successHandler2, failureHandler2 );
+	HTTP.ajax('GET','/category', false).then( response => {
+		$scope.categories = response;
+	});
 }]);
 
 app.controller('loginController', [ '$scope', 'HTTP', function( $scope ) {
@@ -47,17 +40,16 @@ app.controller('registerController',[ '$scope', function( $scope ) {
 }]);
 
 app.controller('productController', ['$scope', 'HTTP', function( $scope, HTTP ) {
-	const successHandler2 = res => {
-		$scope.categories = res.data;
-    }
-    const failureHandler2 = res => {
-		$scope.products = "no categories are avaliable";
-    }
-	HTTP.ajax('GET','/category', false, successHandler2, failureHandler2 );
+	HTTP.ajax('GET','/category', false).then( response => {
+		$scope.categories = response;
+	});
 
 	$scope.submitProducts = () => {
-		HTTP.ajax('POST','/add-product',$scope.product, false, false );
+		HTTP.ajax('POST','/add-product',$scope.product );
 	};
+
+
 }]);
+
 
 	

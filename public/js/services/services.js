@@ -1,13 +1,11 @@
 app.service('HTTP', function( $http ) {
-    this.ajax = function( method, url, data, successCallback, failureCallback ) {
-        $http({
+   this.ajax = function( method, url, data ) {
+        return $http({
            method: method,
            url: url,
            data: data
          }).then( response => {
-             successCallback(response);
-         }, response => {
-             failureCallback(response);
+            return response.data;
          });
     };
 });

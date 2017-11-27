@@ -34,6 +34,13 @@ a , a:hover {
 	outline: none;
 	color: white;
 }
+.searchQuery {
+	margin: -9px; 
+}
+.searchQuery > input {
+	margin: 0;
+	height: 40px;
+}
 .extended-a {
 	color: blue;
 }
@@ -78,6 +85,9 @@ img {
 .price {
 	margin-top: 5%;
 }
+.item-price > h5 > span {
+	font-size: 15px;
+}
 .addToCartBtn {
 	float: right;
 	margin-bottom: 10px;
@@ -85,6 +95,7 @@ img {
 .welcomeTitle {
 	background-color: #2980b9;
 	padding: 1%;
+	height: 55px;
 }
 .welcomeTitle:nth-child(n) {
 	color: white;
@@ -131,9 +142,15 @@ li {
 	cursor: pointer;
 }
 .productsSection, .cartSection {
-	height: 500px;
 	margin-top: 3%;
-
+}
+.productsSection {
+	height: 500px;
+}
+.cartSection {
+	border: 1px solid #e1e1e1;
+	padding-top: 10px;
+	height: auto; 
 }
 .item img {
 	margin: 0 auto;
@@ -141,4 +158,24 @@ li {
 .ul {
 	display: inline-block;
 }
-
+.panel-body {
+	margin-top: 20px;
+}
+.trash {
+	padding: 0;
+	margin-top: 10px;
+}
+.item-img {
+	text-align: center; 
+	margin: 10px; 
+}
+.product-img {
+	width: 80%;
+	padding-right:0;
+}
+.product-name {
+	margin-top: 10px;
+}
+.quantity > input {
+	margin-top: 10px;
+}

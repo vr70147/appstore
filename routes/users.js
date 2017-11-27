@@ -3,10 +3,6 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 
-router.get('/register', ( req, res ) => {
-	return res.redirect('/register.html');
-});
-
 router.get('/session', ( req, res ) => {
 	return res.send(req.session);
 });
@@ -18,11 +14,17 @@ router.post('/logout', ( req, res ) => {
   return res.redirect('/');
 });
 
-router.post('/login', passport.authenticate('local', {
-	successRedirect : '/', 
-	failureRedirect : '/#!/users/login?status=1',
-	failureFlash : false
-}));
+router.post('/login', passport.authenticate('local', { 
+	failureRedirect : '/#!/users/login?status=1'
+}), ( req, res ) => {
+	console.log(req.session.passport.user)
+	if(req.session.passport.user.role) {
+		return res.redirect('/#!/admin');
+	};
+	if(!req.session.passport.user.role) {
+		return res.redirect('/#!/main');
+	};
+});
 
 router.post('/register',( req, res ) => {
 	const firstName = req.body.fname;
@@ -43,7 +45,7 @@ router.post('/register',( req, res ) => {
 				console.log( err );
 				return res.status(500).send();
 			}
-			return res.status(200).redirect('/users/login');
+			return res.status(200).redirect('/');
 
 		});
 	})
