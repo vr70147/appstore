@@ -74,7 +74,7 @@ const addItemToCart = ( req, res, next ) => {
 	const newCartItem = new CartItem( req.body );
 	newCartItem.save(( err, data ) => {
 		console.log(err)
-		CartItem.findOne( data ).populate('_id').populate('price').populate('quantity').exec( ( err, item ) => {
+		CartItem.findOne( data ).populate('_id').populate({ path: 'price', select: 'price' }).populate({ path: 'quantity', select: 'quantity' }).exec( ( err, item ) => {
 			if (err){ return console.log(err)};
 			res.status(200).json(item);
 			return next();
