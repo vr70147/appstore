@@ -8,7 +8,6 @@ const CartItemSchema = new Schema({
 	productId: { type: Schema.Types.ObjectId, ref: 'products'},
 	quantity: { type: Schema.Types.ObjectId, ref: 'products'},
 	price: { type: Schema.Types.ObjectId, ref: 'products'},
-	total: { multiply: [ "$price", "$quantity" ] },
 	cartId: { type: Schema.Types.ObjectId, ref: 'carts'}
 });
 

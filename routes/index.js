@@ -12,41 +12,22 @@ const productsPerCategory = MiddleWares.productsPerCategory;
 const addItemToCart = MiddleWares.addItemToCart;
 const createCart = MiddleWares.createCart;
 
-router.get('/getAll', getProducts, ( req, res ) => {
-	return res.send( req.data );
-});
+router.get('/getAll', getProducts, ( req, res ) => { return res.send( req.data ) });
 
-router.put('/addproduct', addProduct, ( req, res ) => {
-	return res.send( req.data );
-});
+router.put('/addproduct', addProduct, ( req, res ) => { return res.send( req.data ) });
 
-router.patch('/editproduct/:id', editProduct ,( req, res ) => {
-	return res.send( req.data );
-});
+router.patch('/editproduct/:id', editProduct ,( req, res ) => { return res.send( req.data ) });
 
-router.delete('/delproduct/:id', delProduct , (req,res) => {
-	return res.send( req.data );
-});
+router.delete('/delproduct/:id', delProduct , (req,res) => { return res.send( req.data ) });
 
-router.get('/category', getAllCategories, ( req, res ) => {
-	return res.send(req.data);
-});
+router.get('/category', getAllCategories, ( req, res ) => { return res.send(req.data) });
 
-router.put('/category', addCategory, ( req, res ) => {
-	return res.send(req.data);
-});
+router.put('/category', addCategory, ( req, res ) => { return res.send(req.data) });
 
-router.get('/productspercategory/:id', productsPerCategory, ( req, res ) => {
-	return res.send(req.data);
-});
+router.get('/productspercategory/:id', productsPerCategory, ( req, res ) => { return res.send(req.data) });
 
-router.put('/itemtocart', addItemToCart, ( req, res ) => {
-	return res.send( req.data );
-});
+router.put('/itemtocart', addItemToCart, ( req, res ) => { return res.send( req.data ) });
 
-router.put('/cart', createCart, ( req, res ) => {
-	return res.send( req.data );
-});
-
+router.put('/cart', createCart, ( req, res ) => { return res.send( req.data ) });
 
 module.exports = router;

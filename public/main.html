@@ -18,9 +18,13 @@
 				<div class="item-name">
 					<h4><strong>{{product.name}}</strong></h4>
 				</div>
-				<div class="item-price">
-					<h5>price: {{product.price}}<span>₪</span></h5>
+				<div class="item-qty">
+					<input type="number" ng-change="multiply(this)" ng-model="qty" data-id="{{product._id}}/>
 				</div>
+				<div class="item-price">
+					<h5>price: {{sum}}<span>₪</span></h5>
+				</div>
+				{{x}}
 				<div class="addToCartBtn"><button class="btn btn-primary">Add to cart</button></div>
 			</div>
 		</section>

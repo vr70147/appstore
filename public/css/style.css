@@ -179,3 +179,40 @@ li {
 .quantity > input {
 	margin-top: 10px;
 }
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #eaeaea;
+}
+.table th, .table td {
+	vertical-align: middle;
+	border: none;
+}
+.addMoreCategory {
+	border: none;
+	text-decoration: none;
+	font-size: 14px;
+	color: blue;
+	background-color: white;
+}
+.addCategory {
+	text-align: left;
+	width: 80%;
+	margin: 0 auto;
+}
+.addCategory > input[type="text"]{
+	width: 40%;
+	height: 30px;
+}
+.addCategory > button {
+	height: 30px;
+	padding: 0 10px;
+}
+.form a {
+	color: blue;
+	cursor: pointer;
+}
+.collapseLink {
+	width: 80%;
+	height: 20px;
+	margin: 0 auto;
+	text-align: left;
+}

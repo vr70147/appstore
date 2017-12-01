@@ -19,7 +19,7 @@ app.config(['$routeProvider', $routeProvider => {
     controller: "registerController"
     })
    .when('/admin', {
-    templateUrl: "product.html",
-    controller: "productController"
+    templateUrl: "admin.html",
+    controller: "adminController"
     })
 }]);
