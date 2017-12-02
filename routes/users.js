@@ -28,7 +28,7 @@ router.post('/login', passport.authenticate('local', {
 });
 
 router.post('/register',( req, res ) => {
-	const _id = req.body._id;
+	const id = req.body.id;
 	const email = req.body.email;
 	const password = req.body.password;
 	const password2 = req.body.password2;
@@ -37,7 +37,7 @@ router.post('/register',( req, res ) => {
 	const fname = req.body.fname;
 	const lname = req.body.lname;
 		
-	req.checkBody('_id', 'ID is required').notEmpty();
+	req.checkBody('id', 'ID is required').notEmpty();
 	req.checkBody('email', 'Email is required').notEmpty();
 	req.checkBody('email', 'Email is not valid').isEmail();
 	req.checkBody('password', 'Password is required').notEmpty();
@@ -49,7 +49,7 @@ router.post('/register',( req, res ) => {
 
 	const errors = req.validationErrors();
 	const newUser = new User({
-		_id: _id,
+		id: id,
 		email: email,
 		password: password,
 		city: city,
