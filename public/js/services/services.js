@@ -1,4 +1,4 @@
-app.service('HTTP', function( $http ) {
+app.service('HTTP',  function( $http ) {
    this.ajax = function( method, url, data ) {
         return $http({
            method: method,

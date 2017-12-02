@@ -10,14 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "async": "*",
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
     "connect-mongo": "*",
     "cookie-parser": "*",
     "express": "*",
-    "passport": "*",
-    "passport-local": "*",
     "express-session": "*",
-    "mongoose": "*"
+    "express-validator": "^4.3.0",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-local": "*"
   },
   "devDependencies": {},
   "repository": {

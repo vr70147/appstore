@@ -11,6 +11,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const auth = require('./auth/passport');
 const User = require('./models/user');
+const expressValidator = require('express-validator');
 
 const users = require('./routes/users');
 const routes = require('./routes/index');
@@ -42,11 +43,30 @@ app.use(session({
   })
 }));
 passport.use(new LocalStrategy(auth.login));
+passport.use(new LocalStrategy(auth.register));
+
 passport.serializeUser(auth.serializeUser);
 passport.deserializeUser(auth.deserializeUser);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 
 app.use('/', routes);
 app.use('/users', users);

@@ -1,12 +1,35 @@
-
 <div class="col-md-12 col-sm-12">
-	<form ng-submit="registerSubmit()" action="/users/register" method="POST" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form">
-		<h2>Welcome, please register<br>to create account</h2>
-		<input type="text" ng-model="user.fname" name="fname" placeholder="Enter your first name" />
-		<input type="text" ng-model="user.lname" name="lname" placeholder="Enter your last name" />
-		<input type="text" ng-model="user.username" name="username" placeholder="Enter your username" />
-		<input type="password" ng-model="user.password" name="password" placeholder="Enter your password"/>
-		<button name="submit" class="loginBtn btn btn-primary">Register</button> 
-	</form>
+   <form class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form">
+   	<div class="stepReg" ng-hide="step1">
+      <h2>Welcome, please register<br>to create account</h2>
+          <div class="alert alert-danger loginBtn" ng-repeat="error in errors"> {{error}} </div>
+	      <input type="number" ng-model="user.id" name="id" placeholder="Enter your ID" />
+	      <input type="email" ng-model="user.email" name="email" placeholder="Enter your email" />
+	      <input type="password" ng-model="user.password" name="password" placeholder="Enter password" />
+	      <input type="password" name="password2" ng-model="user.password2" placeholder="Enter password to confirm"/>
+	      <button class="loginBtn btn btn-primary" ng-click="continue()">Continue</button> 
+  	</div>
+  	<div class="stepReg" ng-if="step2">
+  		<h2>Welcome, please register<br>to create account</h2>
+  		<div class="alert alert-danger loginBtn" ng-repeat="error in errors"> {{error}} </div>
+  		<select name="city" ng-model="user.city">
+  			<option value="" disabled selected>Choose City</option>
+  			<option value="tel-aviv">Tel-Aviv</option>
+  			<option value="jerusalem">Jerusalem</option>
+  			<option value="haifa">Haifa</option>
+  			<option value="rishon">Rishon Letzion</option>
+  			<option value="petah-tikva">Petah-Tikva</option>
+  			<option value="kfar-saba">Kfar-Saba</option>
+  			<option value="ramat-gan">Ramat-Gan</option>
+  			<option value="givataim">Givataim</option>
+  			<option value="hadera">Hadera</option>
+  			<option value="eilat">Eilat</option>
+  			<option value="beer-sheva">Be'er-Sheva</option>
+  		</select>
+	      <input type="text" name="street" ng-model="user.street" placeholder="Enter street" />
+	      <input type="text" name="fname" ng-model="user.fname" placeholder="Enter first name" />
+	      <input type="text" name="lname" ng-model="user.lname" placeholder="Enter last name"/>
+	      <button class="loginBtn btn btn-primary" ng-click="registerSubmit()">Submit</button> 
+  	</div>
+   </form>
 </div>
-

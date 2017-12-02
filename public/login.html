@@ -1,25 +1,27 @@
-<div class="container-fluid">
-	<div class="row">
-		<section class="col-md-3 col-sm-12 leftSec">
-			<form ng-submit="submitLogin()" method="POST" action="/users/login" class="form">
-				<h2>Welcome, please login your account</h2>
-				{{error}}
-				<input type="text" ng-model="user.username" name="username" placeholder="Enter your username" />
-				<input type="password" ng-model="user.password" name="password" placeholder="Enter your password"/>
-				<button class="btn btn-primary loginBtn" ng-click="submitLogin()">Login</button> 
-				<h6 class="notRegister">Not register yet? <a href="#!/users/register"><span class="extended-a">register</span></a></h6>
-			</form>
-		</section>
-		<section class="col-md-6 col-sm-12 centerSec">
-			<div class="form">
-			</div>
-		</section>
-		<section class="col-md-3 rightSec">
-			<div class="form">
-			</div>
-		</section>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<section class="col-md-3 col-sm-12 leftSec">
+				<form action="/users/login" class="form" method="post">
+					<h2>Welcome, please login your account</h2>
+					<input name="email" placeholder="Enter your email" type="text">
+					<input name="password" placeholder="Enter your password" type="password">
+					<button class="btn btn-primary loginBtn">Login</button>
+					<h6 class="notRegister">Not register yet? <a href="#!/users/register"><span class="extended-a">register</span></a></h6>
+				</form>
+			</section>
+			<section class="col-md-6 col-sm-12 centerSec">
+				<div class="form"></div>
+			</section>
+			<section class="col-md-3 rightSec">
+				<div class="form"></div>
+			</section>
+		</div>
 	</div>
-</div>
-
-
-		
+</body>
+</html>

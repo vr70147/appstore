@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+const Admin = require('../models/user')
 
 router.get('/session', ( req, res ) => {
 	return res.send(req.session);
@@ -27,29 +28,41 @@ router.post('/login', passport.authenticate('local', {
 });
 
 router.post('/register',( req, res ) => {
-	const firstName = req.body.fname;
-	const lastName = req.body.lname;
-	const username = req.body.username;
+	const _id = req.body._id;
+	const email = req.body.email;
 	const password = req.body.password;
-	const newUser = new User();
+	const password2 = req.body.password2;
+	const city = req.body.city;
+	const street = req.body.street;
+	const fname = req.body.fname;
+	const lname = req.body.lname;
+		
+	req.checkBody('_id', 'ID is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('password', 'Password is required').notEmpty();
+	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+	req.checkBody('city', 'City is required').notEmpty();
+	req.checkBody('street', 'Street is required').notEmpty();
+	req.checkBody('fname', 'Firstname is required').notEmpty();
+	req.checkBody('lname', 'lastname is required').notEmpty();
 
-	newUser.fname = firstName;
-	newUser.lname = lastName;
-	newUser.username = username;
-	newUser.password = password;
-
-	User.findOne({username}, ( err, user ) => {
-		if (user) return res.send('user is already exist');
-		newUser.save( ( err, savedUser ) => {
-			if ( err ) {
-				console.log( err );
-				return res.status(500).send();
-			}
-			return res.status(200).redirect('/');
-
+	const errors = req.validationErrors();
+	const newUser = new User({
+		_id: _id,
+		email: email,
+		password: password,
+		city: city,
+		street: street,
+		fname: fname,
+		lname: lname
+	});
+	console.log(newUser);
+	if( errors ){ return res.json( { errors:errors } ) }
+		User.createUser( newUser, ( err, user ) => {
+			if( err ) throw err;
+			return res.redirect('/#!/main');
 		});
-	})
-	
-});
+	});
 
 module.exports = router;

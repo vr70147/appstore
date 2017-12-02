@@ -28,10 +28,7 @@ app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
   			if (event.product._id === value._id);
   			console.log(allProducts[0].price, $scope)
   			return $scope.sum = parseInt(allProducts[0].price * $scope.qty);
-  			
 		});
-		
-		// if( event.product._id === )
 	};
 	
 }]);
@@ -47,9 +44,32 @@ app.controller('loginController', [ '$scope', 'HTTP', function( $scope ) {
 	};
 }]);
 
-app.controller('registerController',[ '$scope', function( $scope ) {
+app.controller('registerController',[ '$scope', 'HTTP', function( $scope, HTTP ) {
+	$scope.continue = () => {
+		$scope.errors = [];
+		HTTP.ajax('POST','/users/register', $scope.user ).then( response => {
+			angular.forEach(response, (value, key) => {
+				for ( let i = 0 ; i < value.length ; i++) {
+					if (value[i].param === "_id" || value[i].param === "email" || value[i].param === "password" || value[i].param === "password2" )
+					$scope.errors.push(value[i].msg);
+				}
+			});
+			if ($scope.errors.length == 0) {
+				$scope.step2 = true;
+				$scope.step1 = true;
+			}
+		})	
+	};
 	$scope.registerSubmit = () => {
-		console.log("register succeed");
+		$scope.errors = [];
+		HTTP.ajax('POST','/users/register', $scope.user ).then( response => {
+			angular.forEach(response, ( value, key ) => {
+				for ( let i = 0 ; i < value.length ; i++ ) {
+					if ( value[i].param === "city" || value[i].param === "street" || value[i].param === "fname" || value[i].param === "lname" )
+					$scope.errors.push(value[i].msg);
+				}
+			});
+		});	
 	};
 }]);
 
@@ -57,7 +77,7 @@ app.controller('adminController', ['$scope', 'HTTP', function( $scope, HTTP ) {
 	$scope.items = [];
 	$scope.options = [];
 	HTTP.ajax('GET','/category', false).then( response => {
-		angular.forEach(response, function(value, key) {
+		angular.forEach(response, (value, key) => {
   			$scope.options.push( value );
 		});
 		console.log($scope.options);
