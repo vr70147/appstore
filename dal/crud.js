@@ -3,6 +3,16 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 const CartItem = require('../models/product-from-cart');
 const Cart = require('../models/cart');
+const errorHandler = (err, res, cb ) => {
+	if(err) {
+		return res.json(err);
+	}
+	return cb();
+}
+const successHandler = (req, data, next) => {
+	req.data = data;
+	return next();
+}
 
 const getAllProducts = ( req, res, next ) => {
 	Product.find({}).populate('category').exec( ( err, category ) => {
@@ -71,28 +81,38 @@ const createCategory = ( req, res, next ) => {
 };
 
 const addItemToCart = ( req, res, next ) => {
-	const newCartItem = new CartItem( req.body );
-	newCartItem.save(( err, data ) => {
-		console.log(err)
-		CartItem.findOne( data ).populate('_id').populate({ path: 'price', select: 'price' }).populate({ path: 'quantity', select: 'quantity' }).exec( ( err, item ) => {
-			if (err){ return console.log(err)};
-			res.status(200).json(item);
-			return next();
-		});
-	});
+	const id = req.params.id;
+	console.log(req.body)
+	Cart.update( { _id: id }, { $push: { items: req.body } },( err, data ) =>
+		errorHandler( err, res, () => successHandler( req, data, next ) ));
+
+};
+const removeItemFromCart = ( req, res, next ) => {
+	const id = req.params.id;
+	Cart.update( { _id: id }, { $pull: { items: req.body } },( err, data ) =>
+		errorHandler( err, res, () => successHandler( req, data, next ) ));
+
 };
 
 const createCart = ( req, res, next ) => {
 	const newCart = new Cart( req.body );
+	console.log(newCart);
 	newCart.save( ( err, data ) => {
-		if (err) return res.json( err );
-		req.data = data;
-		return next();
+		errorHandler(err, res, () => successHandler(req, data, next));
 	});
 };
 
+const getAllCart = ( req, res, next ) => {
+	Cart.find({}).populate('userId').exec(( err, carts ) => {
+		errorHandler(err, res, () => successHandler(req, carts, next));
+	});
+}
+const getItemFromCart = ( req, res, next ) => {
+	const cartId = req.params.id;
+	Cart.find({_id: cartId}, ( err, carts ) => {
+		errorHandler(err, res, () => successHandler(req, carts, next));
+	});
+} 
 
-
-
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory, addItemToCart, createCart };
+const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory, addItemToCart, createCart, getAllCart, removeItemFromCart, getItemFromCart };
 module.exports = MiddleWares;

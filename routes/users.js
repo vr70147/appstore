@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
-const Admin = require('../models/user')
 
 router.get('/session', ( req, res ) => {
 	return res.send(req.session);
@@ -18,12 +17,11 @@ router.post('/logout', ( req, res ) => {
 router.post('/login', passport.authenticate('local', { 
 	failureRedirect : '/#!/users/login?status=1'
 }), ( req, res ) => {
-	console.log(req.session.passport.user)
 	if(req.session.passport.user.role) {
 		return res.redirect('/#!/admin');
 	};
 	if(!req.session.passport.user.role) {
-		return res.redirect('/#!/main');
+		return res.redirect('/#!/users/login');
 	};
 });
 
@@ -57,7 +55,6 @@ router.post('/register',( req, res ) => {
 		fname: fname,
 		lname: lname
 	});
-	console.log(newUser);
 	if( errors ){ return res.json( { errors:errors } ) }
 		User.createUser( newUser, ( err, user ) => {
 			if( err ) throw err;

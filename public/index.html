@@ -16,11 +16,10 @@
 					<img src="https://www.supermarketcy.com.cy/sites/default/files/logo_0_0.png" width="320" height="auto">
 				</div>
 				
-				<div class="col-sm-4 logout">
+				<div class="col-sm-4 logout float-right">
 					<h4>Welcome {{username}}</h4>
 					<ul class="userBtn">
 						<li ng-if="logOut" ng-model="logout"><form method="POST" action="/users/logout"><button type="hidden" class="hidden">| &nbsp &nbsp <i class="fa fa-sign-in" aria-hidden="true"></i> Logout &nbsp &nbsp |</button></form></li>
-						<li ng-if="login" ng-model="login"><a href="#!/users/login">| &nbsp &nbsp <i class="fa fa-sign-out" aria-hidden="true"></i> Login &nbsp &nbsp |</a></li>
 					</ul>
 				</div>
 			</header>

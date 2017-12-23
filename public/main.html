@@ -19,13 +19,13 @@
                <h4><strong>{{product.name}}</strong></h4>
             </div>
             <div class="item-qty">
-               <input type="number" ng-change="multiply(this)" ng-model="qty" data-id="{{product._id}}/>
+               <input type="number" ng-model="product.qty" data-id="{{product._id}}"/>
                   </div>
                   <div class="item-price">
-               <h5>price: {{sum}}<span>₪</span></h5>
+               <h5>price: {{product.price}}<span>₪</span></h5>
             </div>
             {{x}}
-            <div class="addToCartBtn"><button class="btn btn-primary">Add to cart</button></div>
+            <div class="addToCartBtn"><button class="btn btn-primary" id="a{{product._id}}" ng-click="addItemToCart(product)">Add to cart</button></div>
          </div>
       </section>
       <section class="col-md-4 col-sm-12 cartSection">
@@ -39,23 +39,22 @@
                   </div>
                </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" ng-repeat="item in cartItems">
                <div class="row">
-                  <div class="col-md-2 product-img"><img class="img-responsive" src="http://placehold.it/100x70" width="70" height="70">
+                  <div class="col-md-2 product-img"><img class="img-responsive" ng-src="{{item.image}}" width="70" height="70">
                   </div>
                   <div class="col-md-3 product-details">
-                     <h6 class="product-name"><strong>Product name</strong></h6>
-                     <h6><small>Product description</small></h6>
+                     <h4 class="product-name"><strong>{{item.name}}</strong></h4>
                   </div>
                   <div class="col-md-6">
                      <div class="col-md-5 text-left float-left" style="display: inline-block; margin-top: 20px">
-                        <h6><strong>25.00 <span class="text-muted">x</span></strong></h6>
+                        <h6><strong>{{item.price*item.quantity}}₪ <span class="text-muted">x</span></strong></h6>
                      </div>
                      <div class="col-md-5 float-left quantity">
-                        <input type="text" value="1">
+                        <input type="text" value="{{item.quantity}}">
                      </div>
                      <div class="col-md-2 float-right">
-                        <button type="button" class="btn btn-link trash">
+                        <button ng-click="removeItemFromCart()" type="button" class="btn btn-link trash">
                         <i class="fa fa-trash-o trash" aria-hidden="true"></i>
                         </button>
                      </div>
@@ -70,7 +69,7 @@
             <div class="panel-footer">
                <div class="row">
                   <div class="col-md-9">
-                     <h4 class="text-left">Total <strong>$50.00</strong></h4>
+                     <h4 class="text-left">Total <strong>{{sum}}₪</strong></h4>
                   </div>
                   <div class="col-md-3 float-right">
                      <button type="button" class="btn btn-success btn-block">

@@ -12,7 +12,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const auth = require('./auth/passport');
 const User = require('./models/user');
 const expressValidator = require('express-validator');
-
 const users = require('./routes/users');
 const routes = require('./routes/index');
 
@@ -24,6 +23,12 @@ mongoose.connect('mongodb://localhost/store', err => { err ? console.log('could 
 
 // configurations..
 
+passport.use('local', new LocalStrategy(auth.login));
+// passport.use('local-signup', new LocalStrategy({
+//   passReqToCallback: true
+// }, auth.register));
+passport.serializeUser(auth.serializeUser);
+passport.deserializeUser(auth.deserializeUser);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -36,17 +41,12 @@ app.use(session({
   name: 'user_cook',
   cookie: {
     httpOnly: false,
-    maxAge: 1000 * 60 * 5
+    maxAge: 10000 * 600 * 5
   },
   store: new MongoStore({
     url: "mongodb://localhost:27017/store"
   })
 }));
-passport.use(new LocalStrategy(auth.login));
-passport.use(new LocalStrategy(auth.register));
-
-passport.serializeUser(auth.serializeUser);
-passport.deserializeUser(auth.deserializeUser);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -67,7 +67,7 @@ app.use(expressValidator({
     };
   }
 }));
-
+// app.use('/#!/main', auth.validatedUser, routes);
 app.use('/', routes);
 app.use('/users', users);
 

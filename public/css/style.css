@@ -57,11 +57,21 @@ a:hover {
 
 .form {
 	box-sizing: border-box;
-	border: 5px solid #2980b9;
-	height: 100%;
-	padding: 50px 0 50px 0;
+	border: 1px solid #eaeaea;
+	height: 400px;
+	padding: 0;
 	text-align: center;
 	margin-top: 30px;
+}
+.leftSec .form {
+	padding: 50px 0 0 0;
+	border: none;
+	border: 1px solid #eaeaea;
+}
+.rightSec .form {
+	padding: 0;
+	border: none;
+	border: 1px solid #eaeaea;
 }
 
 .btn {
@@ -270,3 +280,80 @@ li {
 	margin: 0 auto;
 	margin-top: 10px;
 }
+.adminImg {
+	width:100px;
+	height:100px;
+}
+.goToShopBTN {
+	width: 80%;
+	font-size: 30px;
+	margin-top: 50%;
+}
+/*Slider*/
+
+@keyframes slidy {
+0% { left: 0%; }
+20% { left: 0%; }
+30% { left: 0%; }
+40% { left: 0%; }
+50% { left: -100%; }
+60% { left: -100%; }
+70% { left: -100%; }
+80% { left: -200%; }
+90% { left: -200%; }
+100% { left: -200%; }
+}
+div#slider { overflow: hidden; }
+div#slider figure img { width: 33.33333333%; float: left; }
+div#slider figure { 
+  position: relative;
+  width: 300%;
+  margin: 0;
+  left: 0;
+  text-align: left;
+  font-size: 0;
+  animation: 10s slidy infinite; 
+}
+.notification {
+	height: 50%;
+	width: 100%;
+	background-color: #eaeaeaea;
+}
+.notification > div {
+	margin-top: 10px;
+	display: inline-block;
+}
+.previewItem {
+	height: 50%;
+	width: 100%;
+	margin: 0;
+}
+.someProductText {
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+.ribbon {
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+}
+.ribbon span {
+  width: 170px;
+  height: 40px;
+  top: 25px;
+  right: -40px;
+  position: absolute;
+  display: block;
+  background: #e74c3c;
+  color: #fff;
+  padding: 5px;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  line-height: 30px;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
+
