@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+const Cart = require('../models/cart');
 
 router.get('/session', ( req, res ) => {
-	return res.send(req.session);
+	User.find({}).populate('cart').exec((err, cart) => {
+		return res.send(req.session);
+	})
 });
 
 router.post('/logout', ( req, res ) => {

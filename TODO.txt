@@ -1,3 +1,14 @@
 
 - העלאת תמונה
 - לייצר רידיירקט לכניסה לא מבוקרת
+- לעשות אירוע CHANGE בעגלה לכמות כפול המחיר
+
+
+
+
+const getAllUsers = ( req, res, next ) => {
+	User.find({}, ( err, users ) => {
+		if (err){ return console.log(err)};
+		res.status(200).json(users);
+	});
+}

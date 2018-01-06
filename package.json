@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "angular-carousel": "^1.1.0",
+    "angular-file-input": "^1.0.2",
+    "angular-file-upload": "^2.5.0",
     "angular-ui-carousel": "^0.1.10",
     "async": "*",
     "bcryptjs": "^2.4.3",

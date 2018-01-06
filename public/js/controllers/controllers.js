@@ -13,6 +13,15 @@ app.controller('indexController', [ '$scope', 'HTTP', '$location', function( $sc
 }]);
 
 app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
+	HTTP.ajax('GET', 'users/session', false).then( response => {
+		$scope.cartId = response.passport.user.cart._id;
+		$scope.userId = response.passport.user._id;
+		setTimeout(() => {
+		HTTP.ajax('GET', '/cart/'+ $scope.cartId + '/items', false).then( response => {
+			$scope.cartItems = response[0].items;
+		});
+	},80)
+	});
 	HTTP.ajax('GET', '/getAll', false).then( response => {
 		$scope.products = response;
 	});
@@ -26,69 +35,76 @@ app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
 		const name = item.name;
 		const image = item.image;
 		const quantity = item.qty;
-		const price = item.price;
+		const multiply = item.price * quantity;
+		cartItems._id = item._id;
 		cartItems.name = name;
 		cartItems.image = image;
 		cartItems.quantity = quantity;
-		cartItems.price = price;
-
-		HTTP.ajax( 'PATCH', '/cart/' + cartId + '/items', cartItems ).then( response => {
+		cartItems.price = multiply;
+		console.log($scope.cartId);
+		HTTP.ajax( 'PATCH', '/cart/' + $scope.cartId + '/items', cartItems ).then( response => {
+			HTTP.ajax('GET', '/cart/'+ $scope.cartId + '/items', false).then( response => {
+			$scope.cartItems = response[0].items;
+			console.log($scope.cartItems)
+		});
 		});
 	};
-	$scope.removeItemFromCart = () => {
-		HTTP.ajax( 'PATCH', '/cart/' + cartId + '/items', "" ).then( response => {
+
+	$scope.removeItemFromCart = item => {
+		const itemId = { itemid : item._id };
+		HTTP.ajax( 'PATCH', '/cart/' + $scope.cartId + '/items', itemId ).then( response => {
 			console.log(response);
 		});
-	}
-	setTimeout(() => { let cartId }, 50);
+	};
 
-	HTTP.ajax('GET', '/cart', false).then( response => {
-		cartId = response[0]._id;
-	});
-
-	setTimeout(() =>{ HTTP.ajax('GET', '/cart/'+ cartId + '/items', false).then( response => {
-		$scope.cartItems = [];
-		angular.forEach(response, (value, key) => {
-			angular.forEach(value.items, (item, key) => {
-				$scope.cartItems.push(item);						
-			})
+	setTimeout(() => {
+		$scope.items = [];
+		HTTP.ajax('GET', '/cart/'+ $scope.cartId + '/items', false).then( response => {
+		angular.forEach(response[0].items, (value, key) => {
+			console.log(value);
+			let total = value.price*value.quantity;
+			value.multiply = total.toFixed(2);
+			$scope.items.push(value);						
+			
 		})
+		console.log($scope.items);
 		$scope.sum = 0;
 		var sum = 0;
-		for(let i = 0 ; i < $scope.cartItems.length ; i++){
-			let price = $scope.cartItems[i].price;
-			let quantity = $scope.cartItems[i].quantity;
+		for(let i = 0 ; i < $scope.items.length ; i++){
+			let price = $scope.items[i].price;
+			let quantity = $scope.items[i].quantity;
 			sum += price*quantity;
 			$scope.sum = sum.toFixed(2);
 		}
 		
-	})},70)
+	})},70);
+
+	$scope.showItemsFromCategory = ( category ) => {
+		HTTP.ajax('GET', 'productspercategory/'+ category._id, false).then( response => {
+			$scope.products = response;
+		})
+	}
 }]);
 
 app.controller('loginController', [ '$scope', 'HTTP','$location', function( $scope, HTTP, $location ) {
-	
 	HTTP.ajax('GET', 'users/session', false).then(response => {
 		const id = response.passport.user._id;
 		$scope.userId = { userId: id }
-	});	
-	setTimeout(() => {
+		if(!$scope.cartId || !$scope.form) {
+			$scope.continue = false;
+			$scope.button = true;
+		}
+		else if(cartId) {
+			$scope.button = false;
+			$scope.continue = true;
+		}
+		else if($scope.form){
+			$scope.continue = false;
+			$scope.button = false;
+		}
+	});
 
-		HTTP.ajax('GET', '/cart', false).then( response => {
-			const checkIfExist = response[0]._id;
-			if(checkIfExist !== id) {
-				$scope.continue = false;
-				$scope.button = true;
-			}
-			else if(checkIfExist === id) {
-				$scope.button = false;
-				$scope.continue = true;
-			}
-			else if($scope.form){
-				$scope.continue = false;
-				$scope.button = false;
-			}
-		});
-	},70)
+			
 	
 	HTTP.ajax('GET', '/getAll', false).then( response => {
 		$scope.allProducts = response.length;
@@ -113,17 +129,23 @@ app.controller('loginController', [ '$scope', 'HTTP','$location', function( $sco
 		$scope.error = '';
 	};
 	$scope.createCart = () => {
-		console.log($scope.userId)
-		;HTTP.ajax('PUT', '/cart', $scope.userId).then( response => {
+		HTTP.ajax('PUT', '/cart', $scope.userId).then( response => {
+			$scope.cartId = response._id;
+			console.log(response);
 			return $location.path('/main');
-		})
+		});
+		setTimeout(() => {
+			console.log($scope.cartId);
+			HTTP.ajax('PATCH', '/users/'+ $scope.userId.userId, $scope.cartId ).then( response => {
+				console.log(response.userId);
+			})
+		},50)
 	}
 	$scope.continueCart = () => {
 		HTTP.ajax('GET', '/cart/'+ $scope.id, $scope.cartUser).then( response => {
 			console.log(response);
-		return $location.path('/main');
-	
-	});
+			return $location.path('/main');
+		});
 	}
 }]);
 
@@ -166,7 +188,6 @@ app.controller('adminController', ['$scope', 'HTTP', function( $scope, HTTP ) {
 		angular.forEach(response, (value, key) => {
   			$scope.options.push( value );
 		});
-		console.log($scope.options);
 	});
 	HTTP.ajax('GET', '/getAll', false).then( response => {
 		$scope.products = response;
@@ -176,6 +197,8 @@ app.controller('adminController', ['$scope', 'HTTP', function( $scope, HTTP ) {
 	$scope.submitProducts = () => {
 		HTTP.ajax('PUT','/addproduct',$scope.product ).then( response => {
 			$scope.items.push( response );
+			console.log(response);
+
 		})
 	};
 
@@ -184,8 +207,9 @@ app.controller('adminController', ['$scope', 'HTTP', function( $scope, HTTP ) {
 			$scope.options.push( response );
 		});
 	};
-
 }]);
+
+
 
 
 	

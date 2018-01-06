@@ -3,6 +3,8 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 const CartItem = require('../models/product-from-cart');
 const Cart = require('../models/cart');
+const User = require('../models/user');
+
 const errorHandler = (err, res, cb ) => {
 	if(err) {
 		return res.json(err);
@@ -67,7 +69,6 @@ const productsPerCategory = ( req, res, next ) => {
 	Product.find({ category: req.params.id }).populate('category').exec( ( err, products ) => {
 		if (err){ return console.log(err)};
 		res.status(200).json(products);
-		return next();
 	}) 
 };
 
@@ -82,28 +83,28 @@ const createCategory = ( req, res, next ) => {
 
 const addItemToCart = ( req, res, next ) => {
 	const id = req.params.id;
-	console.log(req.body)
 	Cart.update( { _id: id }, { $push: { items: req.body } },( err, data ) =>
 		errorHandler( err, res, () => successHandler( req, data, next ) ));
 
 };
 const removeItemFromCart = ( req, res, next ) => {
 	const id = req.params.id;
-	Cart.update( { _id: id }, { $pull: { items: req.body } },( err, data ) =>
+	console.log(req.body);
+	Cart.update( { _id: id }, { $pull: { items: { _id: itemid } } },( err, data ) =>
 		errorHandler( err, res, () => successHandler( req, data, next ) ));
-
 };
 
 const createCart = ( req, res, next ) => {
 	const newCart = new Cart( req.body );
-	console.log(newCart);
-	newCart.save( ( err, data ) => {
-		errorHandler(err, res, () => successHandler(req, data, next));
+	newCart.save( ( err, cart ) => {
+		User.
+		return next();
 	});
 };
 
-const getAllCart = ( req, res, next ) => {
-	Cart.find({}).populate('userId').exec(( err, carts ) => {
+const getCart = ( req, res, next ) => {
+	const cartId = req.params.id;
+	Cart.find({_id: cartId}).populate('userId').exec(( err, carts ) => {
 		errorHandler(err, res, () => successHandler(req, carts, next));
 	});
 }
@@ -113,6 +114,35 @@ const getItemFromCart = ( req, res, next ) => {
 		errorHandler(err, res, () => successHandler(req, carts, next));
 	});
 } 
+const addCartIdToUser = (req, res, next ) => {
+	const id = req.params.id;
+	console.log(req.body);
+	Cart.update( { _id: id }, { $push: { cart: req.body } },( err, data ) => {
+		errorHandler( err, res, () => successHandler( req, data, next ) )
+	});
+};
 
-const MiddleWares = { createProduct, updateProduct, deleteProduct, getAllProducts, findAllCategories, createCategory, productsPerCategory, addItemToCart, createCart, getAllCart, removeItemFromCart, getItemFromCart };
+const getAllCarts = ( req, res, next ) => {
+	Cart.find({}).populate('user').exec( ( err, data ) => {
+		errorHandler( err, res, () => successHandler( req, data, next ) );
+		next();
+	});
+}
+
+const MiddleWares = {
+	createProduct,
+	updateProduct,
+	deleteProduct,
+	getAllProducts,
+	findAllCategories,
+	createCategory,
+	productsPerCategory,
+	addItemToCart, createCart,
+	getCart,
+	removeItemFromCart,
+	getItemFromCart,
+	addCartIdToUser,
+	getAllCarts
+};
+
 module.exports = MiddleWares;

@@ -1,4 +1,4 @@
-const app = angular.module('app', ['ngRoute', 'ngCookies']);
+const app = angular.module('app', ['ngRoute', 'ngCookies', 'angularFileUpload']);
 
 app.config(['$routeProvider', $routeProvider => {
    $routeProvider

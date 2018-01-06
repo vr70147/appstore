@@ -38,10 +38,6 @@ a:hover {
 	color: white;
 }
 
-.searchQuery {
-	margin: -9px;
-}
-
 .searchQuery>input {
 	margin: 0;
 	height: 40px;
@@ -85,11 +81,26 @@ a:hover {
 }
 
 .item {
-	border-radius: 10px;
-	border: 1px solid #e1e1e1;
 	display: inline-block;
 	height: auto;
 	box-sizing: border-box;
+	margin-bottom: 10px;
+	text-align: center;
+	padding: 0 5px 0 5px;
+}
+.innerItem {
+	padding: 10px;
+	border: 1px solid #eaeaea;
+}
+.item-qty, .item.price {
+	margin-bottom: 15px;
+}
+.item-qty input {
+	width: 25%;
+	margin-top: 0;
+}
+.item-qty h5 {
+	display: inline-block;
 }
 
 .bold {
@@ -112,16 +123,32 @@ img {
 .item-price>h5>span {
 	font-size: 15px;
 }
+.item-name {
+	background-color: #eaeaea;
+}
+.fa-times-circle {
+	color: #007bff;
+}
+.ul ul li button {
+	background: none;
+	border: 1px solid white;
+	border-radius: 10px;
+	color: white;
+	padding: 5px 10px 5px 10px;
+	margin-right: 10px;
+}
 
 .addToCartBtn {
-	float: right;
 	margin-bottom: 10px;
+	width: 100%;
+}
+.addToCartBtn button {
+	width: 100%;
 }
 
 .welcomeTitle {
 	background-color: #2980b9;
 	padding: 1%;
-	height: 55px;
 }
 
 .welcomeTitle:nth-child(n) {
@@ -199,6 +226,7 @@ li {
 
 .ul {
 	display: inline-block;
+	line-height: 30px;
 }
 
 .panel-body {
@@ -355,5 +383,14 @@ div#slider figure {
   line-height: 30px;
   transform: rotate(45deg);
   -ms-transform: rotate(45deg);
+}
+.cartTitle h3 {
+	display: inline-block;
+}
+.cartTitle button {
+	float: right;
+	background: none;
+	border: none;
+	outline: none;
 }
 

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
+const User = require('../models/user');
 
 const UserSchema = new Schema({
 	id: { type: Number, require: true, uniq: true, index: true },
@@ -12,6 +13,7 @@ const UserSchema = new Schema({
 	street: { type: String },
 	fname: { type: String, require: true },
 	lname: { type: String, require: true },
+	cart: { type: Schema.Types.ObjectId, ref: 'carts'},
 	role: String
 });
 
