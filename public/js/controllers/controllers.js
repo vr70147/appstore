@@ -1,27 +1,25 @@
 
-app.controller('indexController', [ '$scope', 'HTTP', '$location', function( $scope, HTTP, $location)  {
-
-	HTTP.ajax('GET', '/users/session', false).then( response => {
-		if( response.passport ) {
-		  $scope.username = response.passport.user.fname;
-		  return $scope.logOut = true;
-		}
-		$scope.username = "guess";
-		$scope.login = true;
-		$location.path('/');
-	});
+app.controller('indexController', [ '$scope', 'HTTP', '$location', 'userSRV', function( $scope, HTTP, $location, userSRV)  {
+	userSRV.getUser().then(
+			user => {
+				$scope.username = user.fname;
+		  		$scope.logOut = true;
+			},
+			() => {
+				$scope.username = "guess";
+				$scope.login = true;
+			}
+		)
 }]);
 
-app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
-	HTTP.ajax('GET', 'users/session', false).then( response => {
-		$scope.cartId = response.passport.user.cart._id;
-		$scope.userId = response.passport.user._id;
-		setTimeout(() => {
-		HTTP.ajax('GET', '/cart/'+ $scope.cartId + '/items', false).then( response => {
+app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', function( $scope, HTTP, userSRV, user ) {
+	
+	if( user )	{
+		HTTP.ajax('GET', '/cart/'+ user.cart + '/items', false).then( response => {
 			$scope.cartItems = response[0].items;
-		});
-	},80)
-	});
+		});	
+	}
+	
 	HTTP.ajax('GET', '/getAll', false).then( response => {
 		$scope.products = response;
 	});
@@ -86,38 +84,26 @@ app.controller('mainController', [ '$scope', 'HTTP', function( $scope, HTTP ) {
 	}
 }]);
 
-app.controller('loginController', [ '$scope', 'HTTP','$location', function( $scope, HTTP, $location ) {
-	HTTP.ajax('GET', 'users/session', false).then(response => {
-		const id = response.passport.user._id;
-		$scope.userId = { userId: id }
-		if(!$scope.cartId || !$scope.form) {
-			$scope.continue = false;
-			$scope.button = true;
-		}
-		else if(cartId) {
-			$scope.button = false;
-			$scope.continue = true;
-		}
-		else if($scope.form){
-			$scope.continue = false;
-			$scope.button = false;
-		}
-	});
+app.controller('loginController', [ '$scope', 'HTTP','$location','user', function( $scope, HTTP, $location, user ) {
+	$scope.form = true
 
-			
-	
+		
+		if (user) {
+			$scope.form = false
+			if (user.cart) {
+				$scope.button = false;
+				$scope.continue = true;
+			} else {
+				$scope.continue = false;
+				$scope.button = true;
+			}
+		}
+
 	HTTP.ajax('GET', '/getAll', false).then( response => {
 		$scope.allProducts = response.length;
 		$scope.someProduct = response[ Math.round( Math.random() * response.length ) -1 ];
 	});
-	HTTP.ajax('GET', '/users/session', false ).then( response => {
-		if(response.passport) {
-			$scope.button = true;
-		}
-		else if(!response.passport) {
-			$scope.form = true;
-		}
-	});
+
 	const loc = location.href;
 	const error = loc.split('=')[1];
 	if (error == 1) {

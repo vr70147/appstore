@@ -1,65 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-	<div class="container-fluid">
-		<div class="row">
-			<section class="col-md-3 col-sm-12 leftSec">
-				<form action="/users/login" ng-if="form" class="form" method="POST" ng-submit="submitLogin()">
-					<h2>Welcome, please login <br/>your account</h2>
-					{{error}}
-					<input name="username" placeholder="Enter your email" type="text">
-					<input name="password" placeholder="Enter your password" type="password">
-					<button class="btn btn-primary loginBtn">Login</button>
-					<h6 class="notRegister">Not register yet? <a href="#!/users/register"><span class="extended-a">register</span></a></h6>
-				</form>
-				<div class="goToShop form">
-					<div class="startShopping" ng-if="button">
-						<h2>Thanks for registration!</h2>
-						<button ng-click="createCart()" class="goToShopBTN btn btn-primary">
-							Start Shopping &nbsp<i class="fa fa-arrow-circle-right" aria-hidden="true">	
-						</i></button>
-					</div>
-					<div class="startShopping" ng-if="continue">
-						<h2>Thanks for coming back!</h2>
-						<button class="goToShopBTN btn btn-primary" ng-click="continueCart()">continue Shopping &nbsp<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
-					</div>
+<div class="container-fluid">
+	<div class="row">
+		<section class="col-md-3 col-sm-12 leftSec">
+			<form action="/users/login" ng-if="form" class="form" method="POST" ng-submit="submitLogin()">
+				<h2>Welcome, please login <br/>your account</h2>
+				{{error}}
+				<input name="username" placeholder="Enter your email" type="text">
+				<input name="password" placeholder="Enter your password" type="password">
+				<button class="btn btn-primary loginBtn">Login</button>
+				<h6 class="notRegister">Not register yet? <a href="#!/users/register"><span class="extended-a">register</span></a></h6>
+			</form>
+			<div class="goToShop form" ng-if="button || continue">
+				<div class="startShopping" ng-if="button">
+					<h2>Thanks for registration!</h2>
+					<button ng-click="createCart()" class="goToShopBTN btn btn-primary">
+						Start Shopping &nbsp<i class="fa fa-arrow-circle-right" aria-hidden="true">	
+					</i></button>
+				</div>
+				<div class="startShopping" ng-if="continue">
+					<h2>Thanks for coming back!</h2>
+					<button class="goToShopBTN btn btn-primary" ng-click="continueCart()">continue Shopping &nbsp<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+				</div>
 
+			</div>
+		</section>
+		<section class="col-md-6 col-sm-12 centerSec">
+			<div class="form">
+				<div id="slider">
+					<figure>
+					<img src="images/01.jpg" alt>
+					<img src="images/02.jpg" alt>
+					<img src="images/03.jpg" alt>
+					</figure>
 				</div>
-			</section>
-			<section class="col-md-6 col-sm-12 centerSec">
-				<div class="form">
-					<div id="slider">
-						<figure>
-						<img src="images/01.jpg" alt>
-						<img src="images/02.jpg" alt>
-						<img src="images/03.jpg" alt>
-						</figure>
+			</div>
+		</section>
+		<section class="col-md-3 rightSec">
+			<div class="form">
+				<div class="previewItem row">
+					<div class="col-md-8">
+						<img ng-src="{{someProduct.image}}" height="90%" />
+					</div>
+					<div class="col-md-4 someProductText">
+						<div class="ribbon">
+						  <span>only {{someProduct.price}}₪</span>
+						</div> 
 					</div>
 				</div>
-			</section>
-			<section class="col-md-3 rightSec">
-				<div class="form">
-					<div class="previewItem row">
-						<div class="col-md-8">
-							<img ng-src="{{someProduct.image}}" height="90%" />
-						</div>
-						<div class="col-md-4 someProductText">
-							<div class="ribbon">
-							  <span>only {{someProduct.price}}₪</span>
-							</div> 
-						</div>
-					</div>
-					<div class="notification">
-						<div>
-							<h4>We have {{allProducts}} products in our store</h4>
-						</div>
+				<div class="notification">
+					<div>
+						<h4>We have {{allProducts}} products in our store</h4>
 					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	</div>
-</body>
-</html>
+</div>

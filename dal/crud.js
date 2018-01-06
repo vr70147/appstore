@@ -97,8 +97,10 @@ const removeItemFromCart = ( req, res, next ) => {
 const createCart = ( req, res, next ) => {
 	const newCart = new Cart( req.body );
 	newCart.save( ( err, cart ) => {
-		User.
-		return next();
+		//console.log(cart._id)
+		User.update({_id: req.user._id},{ $set : { cart: cart._id } }, ( err, data ) => {
+			return next();
+		})
 	});
 };
 
