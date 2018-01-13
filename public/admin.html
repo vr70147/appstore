@@ -1,12 +1,12 @@
 <div class="container-fluid">
 	<div class="col-md-12 col-sm-12">
 		<div class="row">
-		<section class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form">
+		<section class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form fixedForm">
 			<h2>Create new product</h2>
-			<input type="text" ng-model="product.name" placeholder="Enter name" />
-			<input type="number" ng-model="product.price" placeholder="Enter price" />
-			<input type="file" ng-model="product.image"/>
-			<select ng-model="product.category">
+			<input type="text" ng-model="product.name" placeholder="Enter name" required />
+			<input type="number" ng-model="product.price" placeholder="Enter price" required/>
+			<input type="text" ng-model="product.image" placeholder="Enter image url" required/>
+			<select ng-model="product.category" required>
 				<option disabled selected value="">Choose Category</option>
 				<option ng-repeat="option in options" value="{{option._id}}">{{option.name}}</option>
 			</select><br>
@@ -16,8 +16,11 @@
 				<div ng-show="collapsed" class="addCategory">
 					<input type="text" placeholder="Enter Category" ng-model="category.name" float-left/>
 					<button class="btn btn-secondary" ng-click="addCategory()" float-left>Add</button>
+					<h6 ng-if="confirmAdd">Category added successfuly!</h6>
 				</div>
-			<button class="loginBtn btn btn-primary" ng-click="submitProducts()">Create</button> 
+				<div class="createProductBtn">
+					<button class="loginBtn btn btn-primary" ng-click="submitProducts(product)">Create</button>
+				</div> 
 		</section>
 		<section class="col-md-8 ml-sm-auto">
 			<div class="row">
@@ -35,19 +38,37 @@
 		              </thead>
 		              <tbody>
 		                <tr ng-repeat="product in products">
-		                  <td>{{product.name}}</td>
-		                  <td>{{product.price}}</td>
-		                  <td><img src="{{product.image}}" width="auto" height="60"></td>
-		                  <td>{{product.category.name}}</td>
-		                  <td><i class="fa fa-trash-o trash" aria-hidden="true"></i>&nbsp &nbsp &nbsp<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-							</td>
+		                <td>{{product.name}}</td>
+		                <td>{{product.price}}</td>
+		                <td><img src="{{product.image}}" width="auto" height="60"></td>
+		                <td>{{product.category.name}}</td>
+		                <td>
+		                	<button ng-click="remove(product)" class="smallBtn">
+		                		<i class="fa fa-trash-o trash" aria-hidden="true"></i>
+		                	</button>&nbsp &nbsp &nbsp
+		                	<button ng-click="edit(product)" class="smallBtn">
+		                 		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+		                 	</button>
+						</td>
 		                </tr>
 		              </tbody>
 		            </table>
 		          </div>     
       			</div>
       		</section>
+      		<div class="editPopupBg" ng-if="editPopup">
+	      		<div>
+	      			<button class="closePopup"><i class="fa fa-times-circle" aria-hidden="true" ng-click="closePopup()"></i></button>
+	      			<h2>Edit Products</h2>
+		      		<input type="text" ng-model="productDetails.name" placeholder="Enter name" required />
+					<input type="number" ng-model="productDetails.price" placeholder="Enter price" required/>
+					<input type="text" ng-model="productDetails.image" placeholder="Enter image url" required/>
+					<br>
+					<button class="loginBtn btn btn-primary" ng-click="updateProduct(productDetails)">
+						Update product
+					</button>
+	      		</div>
+	      	</div>
       	</div>
 	</div>
-	
 </div>

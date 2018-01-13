@@ -2,7 +2,6 @@ const app = angular.module('app', ['ngRoute', 'ngCookies', 'angularFileUpload'])
 
 app.config(['$routeProvider', $routeProvider => {
    $routeProvider
-
    .when('/', {
     templateUrl: "login.html",
     controller: "loginController",
@@ -10,13 +9,23 @@ app.config(['$routeProvider', $routeProvider => {
       user: ["userSRV", "$location", function(userSRV, $location) {
         return userSRV.getUser().then(
           userInfo =>  { return userInfo },
-          error => { return false } 
-        )
+          error => { return false
+          })
       }]
     }
-
-   })
-
+  })
+   .when('/order', {
+    templateUrl: "order.html",
+    controller: "orderController",
+    resolve: {
+      user: ["userSRV", "$location", function(userSRV, $location) {
+        return userSRV.getUser().then(
+          userInfo =>  { return userInfo },
+          error => { $location.path("/");
+          })
+      }]
+    }
+    })
    .when('/main', {
     templateUrl: "main.html",
     controller: "mainController",
@@ -24,8 +33,8 @@ app.config(['$routeProvider', $routeProvider => {
       user: ["userSRV", "$location", function(userSRV, $location) {
         return userSRV.getUser().then(
           userInfo =>  { return userInfo },
-          error => {  $location.path("/"); } 
-        )
+          error => {  $location.path("/"); 
+        })
       }]
     }
    })
@@ -35,6 +44,14 @@ app.config(['$routeProvider', $routeProvider => {
     })
    .when('/admin', {
     templateUrl: "admin.html",
-    controller: "adminController"
+    controller: "adminController",
+    resolve: {
+      user: ["userSRV", "$location", function(userSRV, $location) {
+        return userSRV.getUser().then(
+          userInfo =>  { return userInfo },
+          error => {  $location.path("/"); 
+        })
+      }]
+    }
     })
 }]);

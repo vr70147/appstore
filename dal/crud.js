@@ -4,6 +4,7 @@ const Category = require('../models/category');
 const CartItem = require('../models/product-from-cart');
 const Cart = require('../models/cart');
 const User = require('../models/user');
+const Order = require('../models/order');
 
 const errorHandler = (err, res, cb ) => {
 	if(err) {
@@ -39,13 +40,11 @@ const updateProduct = ( req, res, next ) => {
 		const productToUpdate = data;
 		productToUpdate.name = req.body.name;
 		productToUpdate.image = req.body.image;
-		productToUpdate.serial = req.body.serial;
-		productToUpdate.content = req.body.content;
 		productToUpdate.price = req.body.price;
-		productToUpdate.quantity = req.body.quantity;
 		productToUpdate.save(( err, data )=>{
-			if( err ) console.log(err);
-			return res.json(data);
+				if( err ) console.log(err);
+				return res.json(data);
+			
 		});
 	});
 };
@@ -82,22 +81,20 @@ const createCategory = ( req, res, next ) => {
 };
 
 const addItemToCart = ( req, res, next ) => {
-	const id = req.params.id;
-	Cart.update( { _id: id }, { $push: { items: req.body } },( err, data ) =>
+	Cart.update( { _id: req.user.cart }, { $push: { items: req.body } },( err, data ) =>
 		errorHandler( err, res, () => successHandler( req, data, next ) ));
 
 };
 const removeItemFromCart = ( req, res, next ) => {
-	const id = req.params.id;
-	console.log(req.body);
-	Cart.update( { _id: id }, { $pull: { items: { _id: itemid } } },( err, data ) =>
+	console.log(req.user.cart);
+	Cart.update( { _id: req.user.cart }, { $pull: { items: req.body } },( err, data ) =>
 		errorHandler( err, res, () => successHandler( req, data, next ) ));
 };
 
 const createCart = ( req, res, next ) => {
 	const newCart = new Cart( req.body );
 	newCart.save( ( err, cart ) => {
-		//console.log(cart._id)
+		req.user.cart = cart._id;
 		User.update({_id: req.user._id},{ $set : { cart: cart._id } }, ( err, data ) => {
 			return next();
 		})
@@ -105,29 +102,36 @@ const createCart = ( req, res, next ) => {
 };
 
 const getCart = ( req, res, next ) => {
-	const cartId = req.params.id;
-	Cart.find({_id: cartId}).populate('userId').exec(( err, carts ) => {
+	Cart.find({_id: req.user.cart }).populate('userId').exec(( err, carts ) => {
 		errorHandler(err, res, () => successHandler(req, carts, next));
 	});
-}
+};
 const getItemFromCart = ( req, res, next ) => {
-	const cartId = req.params.id;
-	Cart.find({_id: cartId}, ( err, carts ) => {
+	Cart.find({_id: req.user.cart }, ( err, carts ) => {
 		errorHandler(err, res, () => successHandler(req, carts, next));
 	});
-} 
-const addCartIdToUser = (req, res, next ) => {
-	const id = req.params.id;
-	console.log(req.body);
-	Cart.update( { _id: id }, { $push: { cart: req.body } },( err, data ) => {
-		errorHandler( err, res, () => successHandler( req, data, next ) )
+}; 
+const createOrder = ( req, res, next ) => {
+	const newOrder = new Order( req.body );
+	newOrder.save(( err, data ) => {
+		if ( err ) return res.json( err )
+		errorHandler(err, res, () => successHandler(req, data, next));
+		return next();
 	});
 };
 
-const getAllCarts = ( req, res, next ) => {
-	Cart.find({}).populate('user').exec( ( err, data ) => {
-		errorHandler( err, res, () => successHandler( req, data, next ) );
-		next();
+const getOrders = ( req, res, next ) => {
+	Order.find({}, ( err, orders ) => {
+		errorHandler(err, res, () => successHandler(req, orders, next));
+	});
+}; 
+
+const destroyCart = (req, res, next ) => {
+	Cart.remove({ _id: req.user.cart }, ( err, removedCart ) => {
+		User.update({_id: req.user._id},{ $unset : { cart: req.user.cart } }, ( err, data ) => {
+			req.user.cart = '';
+		})
+		return next();
 	});
 }
 
@@ -139,12 +143,14 @@ const MiddleWares = {
 	findAllCategories,
 	createCategory,
 	productsPerCategory,
-	addItemToCart, createCart,
+	addItemToCart,
+	createCart,
 	getCart,
 	removeItemFromCart,
 	getItemFromCart,
-	addCartIdToUser,
-	getAllCarts
+	createOrder,
+	getOrders,
+	destroyCart
 };
 
 module.exports = MiddleWares;

@@ -14,8 +14,9 @@ const removeItemFromCart = MiddleWares.removeItemFromCart;
 const createCart = MiddleWares.createCart;
 const getCart = MiddleWares.getCart;
 const getItemFromCart = MiddleWares.getItemFromCart;
-const addCartIdToUser = MiddleWares.addCartIdToUser;
-const getAllCarts = MiddleWares.getAllCarts;
+const createOrder = MiddleWares.createOrder;
+const getOrders = MiddleWares.getOrders;
+const destroyCart = MiddleWares.destroyCart;
 
 router.get('/getAll', getProducts, ( req, res ) => { return res.send( req.data ) });
 
@@ -31,19 +32,20 @@ router.put('/category', addCategory, ( req, res ) => { return res.send(req.data)
 
 router.get('/productspercategory/:id', productsPerCategory, ( req, res ) => { return res.send(req.data) });
 
-router.patch('/cart/:id/items', addItemToCart, ( req, res ) => { return res.send( req.data ) });
+router.patch('/cart/items', addItemToCart, ( req, res ) => { return res.send( req.data ) });
 
-router.get('/cart/:id/items', getItemFromCart, ( req, res ) => { return res.send( req.data ) });
+router.get('/cart/items', getItemFromCart, ( req, res ) => { return res.send( req.data ) });
 
-router.patch('/cart/:id/items', removeItemFromCart, ( req, res ) => { return res.send( req.data ) });
-
-router.patch('/users/:id', addCartIdToUser, ( req, res ) => { return res.send( req.data ) });
+router.patch('/cart/items/pull', removeItemFromCart, ( req, res ) => { return res.send( req.data ) });
 
 router.put('/cart', createCart, ( req, res ) => { return res.send( req.data ) });
 
-router.get('/cart/:id', getCart, ( req, res ) => { return res.send( req.data ) });
+router.get('/cart', getCart, ( req, res ) => { return res.send( req.data ) });
 
-router.get('/cart', getAllCarts, ( req, res ) => { return res.send( req.data ) });
+router.put('/order', createOrder, ( req, res ) => { return res.send( req.data ) });
 
+router.get('/order', getOrders, ( req, res ) => { return res.send( req.data ) });
+
+router.delete('/cart', destroyCart, ( req, res ) => { return res.send( req.data ) });
 
 module.exports = router;

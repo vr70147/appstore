@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Cart = require('../models/cart');
 
 router.get('/session', ( req, res ) => {
-	User.find({}).populate('cart').exec((err, cart) => {
+	User.find({}, (err, cart) => {
 		return res.send(req.session);
 	})
 });
@@ -24,7 +24,7 @@ router.post('/login', passport.authenticate('local', {
 		return res.redirect('/#!/admin');
 	};
 	if(!req.session.passport.user.role) {
-		return res.redirect('/#!/users/login');
+		return res.redirect('/');
 	};
 });
 

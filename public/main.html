@@ -23,7 +23,7 @@
                   <h5>quantity:</h5> <input type="number" ng-init="product.qty=1" ng-model="product.qty" data-id="{{product._id}}"/>
                      </div>
                      <div class="item-price">
-                  <h5>price: {{product.price}}<span>₪</span></h5>
+                  <h5 data-id="{{}}product._id">price: {{product.price}}<span>₪</span></h5>
                </div>
                <div class="addToCartBtn"><button class="btn btn-primary" id="a{{product._id}}" ng-click="addItemToCart(product)">Add to cart</button></div>
             </div>
@@ -35,32 +35,34 @@
                <div class="panel-title">
                   <div class="row">
                      <div class="col-md-12 cartTitle">
-                        <h3><span class="glyphicon glyphicon-shopping-cart"></span>My shopping list</h3>
+                        <h3><span class="glyphiscon glyphicon-shopping-cart"></span>My shopping list</h3>
                         <button><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                      </div>
                   </div>
                </div>
             </div>
-            <div class="panel-body" ng-repeat="item in cartItems">
+            <div class="cartCont">
+            <div class="panel-body" ng-repeat="item in items track by $index">
                <div class="row">
                   <div class="col-md-2 product-img"><img class="img-responsive" ng-src="{{item.image}}" width="70" height="70">
                   </div>
-                  <div class="col-md-3 product-details">
-                     <h4 class="product-name"><strong>{{item.name}}</strong></h4>
+                  <div class="col-md-3 product-details vcenter">
+                     <h6><strong>{{item.name}}</strong></h6>
                   </div>
-                  <div class="col-md-6">
-                     <div class="col-md-5 text-left float-left" style="display: inline-block; margin-top: 20px">
-                        <h6><strong>{{item.price}}₪ <span class="text-muted">x</span></strong></h6>
+                  
+                     <div class="col-md-3 vcenter">
+                        <h6 class="vcenter-child"><strong>{{item.price | number:2 }}₪ <span class="text-muted">x</span></strong></h6>
                      </div>
-                     <div class="col-md-5 float-left quantity">
-                        <input type="text" value="{{item.quantity}}">
+                     <div class="col-md-2 quantity vcenter">
+                        <input class="vcenter-child" type="number" min="0" ng-value="item.quantity" ng-model="item.quantity" ng-change="multiply($index)">
                      </div>
-                     <div class="col-md-2 float-right">
-                        <button ng-click="removeItemFromCart(item)" class="btn btn-link trash">
+                     <div class="col-md-1 vcenter">
+                        <button ng-click="removeItemFromCart(item)"
+                        class="btn btn-link trash vcenter-child">
                         <i class="fa fa-trash-o trash" aria-hidden="true"></i>
                         </button>
                      </div>
-                  </div>
+                  
                </div>
                <hr>
                <div class="row">
@@ -68,14 +70,15 @@
                   </div>
                </div>
             </div>
+         </div>
             <div class="panel-footer">
                <div class="row">
                   <div class="col-md-9">
-                     <h4 class="text-left">Total <strong>{{sum}}₪</strong></h4>
+                     <h4 class="text-left">Total <strong>{{total | number:2}}₪</strong></h4>
                   </div>
                   <div class="col-md-3 float-right">
-                     <button type="button" class="btn btn-success btn-block">
-                     Checkout
+                     <button type="button" class="btn btn-success btn-block" ng-click="goToOrder()">
+                     Order
                      </button>
                   </div>
                </div>

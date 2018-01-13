@@ -1,0 +1,74 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="searchPanel col-md-12">
+			<div class="col-md-8 offset-md-2 searchQuery">
+            	<input type="text" class="search" placeholder="Search product..." ng-model="search.text"/>
+         	</div>	
+		</div>
+		<div class="col-md-4 offset-md-2 leftOrder">
+			<div class="row">
+				<div class="orderTitle col-md-9">
+					<h2>My Cart</h2>
+				</div>
+				<div class="backToShop col-md-3">
+					<a href="/#!/main">Back To Shop</a>
+				</div>
+				<div class="orderTopLine col-md-12"></div>
+				<section class="col-md-12 col-sm-12">
+		        <div class="panel panel-info">
+		            <div class="panel-body" ng-repeat="item in items | filter:search.text">
+		               	<div class="row">
+		                  	<div class="col-md-2 product-img"><img class="img-responsive" ng-src="{{item.image}}" width="70" height="70">
+		                  	</div>
+		                  	<div class="col-md-3" ng-bind-html="item.name | highlight:search.text">
+		                     	<h6>
+								<strong>{{item.name}}</strong></h6>
+		                  	</div>
+		                  	<div class="col-md-3">
+		                        <h6>quantity: {{item.quantity}}</h6>
+		                    </div>
+		                  	<div class="col-md-4">
+		                        <h6><strong>price: {{item.price}}₪ </strong></h6>
+		                    </div>
+		                 </div>
+		                 <hr>
+		            </div>
+		            
+		            <div class="row">
+		                <div class="text-center"></div>
+		            </div>
+		        </div>
+		        <div class="panel-footer">
+		            <div class="row">
+		                <div class="col-md-9">
+		                    <h4 class="text-left">Total <strong>{{sum}}₪</strong></h4>
+		                </div>
+		            </div>
+		        </div>
+		      </section>
+		    </div>
+		</div>
+		<div class="col-md-4 rightOrder">
+			<div class="row">
+				<div class="orderTitle col-md-9">
+					<h2>Order</h2>
+				</div>
+				<div class="orderTopLine col-md-12"></div>
+			
+			<div class="orderShippingTitle col-md-9">
+					<h4>Shipping Details:</h4>
+				</div>
+				<div class="orderTopLine col-md-12"></div>
+				<form class="col-md-10 offset-md-1 orderForm">
+					<input ng-model="city" placeholder="Enter your city" type="text" value="{{city}}" required>
+					<input ng-model="street" value="{{street}}" placeholder="Enter your Street" type="text" required>
+					<input ng-model="dateOfDelivery" placeholder="Enter shipping date" type="date"
+					ng-change="checkDate(dateOfDelivery)" required>
+					<input ng-model="creditCard" placeholder="Enter your credit card" type="text" required>
+					<h6 ng-if="error">Please provide a valid Visa number!</h6>
+					<button class="btn btn-primary loginBtn" ng-click="submitOrder()">Order</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

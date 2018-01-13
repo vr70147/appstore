@@ -48,7 +48,8 @@
 				</div>
 				<div class="notification">
 					<div>
-						<h4>We have {{allProducts}} products in our store</h4>
+						<h4>We have {{allProducts}} products in our store</h4><br>
+						<h4 ng-if="cartExist"><strong>Notification:</strong><br> You have open cart from <br> {{date}}</h4>
 					</div>
 				</div>
 			</div>
