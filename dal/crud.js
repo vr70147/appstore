@@ -41,7 +41,7 @@ const updateProduct = ( req, res, next ) => {
 		productToUpdate.name = req.body.name;
 		productToUpdate.image = req.body.image;
 		productToUpdate.price = req.body.price;
-		productToUpdate.save(( err, data )=>{
+		productToUpdate.save(( err, data )=> {
 				if( err ) console.log(err);
 				return res.json(data);
 			
@@ -133,6 +133,11 @@ const destroyCart = (req, res, next ) => {
 		})
 		return next();
 	});
+};
+
+const updateItemInCart = ( req, res, next ) => {
+	Cart.update( { _id: req.user.cart }, { $set: { items: req.body } },( err, data ) =>
+		errorHandler( err, res, () => successHandler( req, data, next ) ));
 }
 
 const MiddleWares = {
@@ -150,7 +155,8 @@ const MiddleWares = {
 	getItemFromCart,
 	createOrder,
 	getOrders,
-	destroyCart
+	destroyCart,
+	updateItemInCart
 };
 
 module.exports = MiddleWares;

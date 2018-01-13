@@ -54,7 +54,8 @@
                         <h6 class="vcenter-child"><strong>{{item.price | number:2 }}₪ <span class="text-muted">x</span></strong></h6>
                      </div>
                      <div class="col-md-2 quantity vcenter">
-                        <input class="vcenter-child" type="number" min="0" ng-value="item.quantity" ng-model="item.quantity" ng-change="multiply($index)">
+                        <input class="vcenter-child" type="number" min="0" ng-value="item.quantity"
+                        ng-model="item.quantity" ng-change="multiply($index)">
                      </div>
                      <div class="col-md-1 vcenter">
                         <button ng-click="removeItemFromCart(item)"

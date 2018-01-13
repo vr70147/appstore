@@ -11,15 +11,13 @@ app.controller('adminController', ['$scope', 'HTTP','userSRV', 'user','$timeout'
 		$scope.productDetails = {
 			name: product.name,
 			price: product.price,
-			image: product.image,
-			category: product.category.name
-		}
+			image: product.image		}
 	}
 	$scope.updateProduct = (items) => {
 		const itemsToSend = {
 			name: items.name,
 			image: items.image,
-			price: items.price,
+			price: items.price
 		};
 
 		HTTP.ajax('PATCH', '/editproduct/' + $scope.productId, itemsToSend).then( response => {

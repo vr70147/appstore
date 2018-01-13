@@ -17,6 +17,7 @@ const getItemFromCart = MiddleWares.getItemFromCart;
 const createOrder = MiddleWares.createOrder;
 const getOrders = MiddleWares.getOrders;
 const destroyCart = MiddleWares.destroyCart;
+const updateItemInCart = MiddleWares.updateItemInCart;
 
 router.get('/getAll', getProducts, ( req, res ) => { return res.send( req.data ) });
 
@@ -33,6 +34,8 @@ router.put('/category', addCategory, ( req, res ) => { return res.send(req.data)
 router.get('/productspercategory/:id', productsPerCategory, ( req, res ) => { return res.send(req.data) });
 
 router.patch('/cart/items', addItemToCart, ( req, res ) => { return res.send( req.data ) });
+
+router.patch('/cart/items/update', updateItemInCart, ( req, res ) => { return res.send( req.data ) });
 
 router.get('/cart/items', getItemFromCart, ( req, res ) => { return res.send( req.data ) });
 

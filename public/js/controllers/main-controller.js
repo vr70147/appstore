@@ -1,7 +1,5 @@
 app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', 'cartSRV', '$location', function( $scope, HTTP, userSRV, user, cartSRV, $location ) {
 	
-	
-
 	if( user )	{
 		cartSRV.getCartItems().then(
 			cart => {
@@ -20,6 +18,8 @@ app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', 'cartSRV
 			}
 		}
 		$scope.items[itemIndex].price = originalPrice * $scope.items[itemIndex].quantity;
+		HTTP.ajax('PATCH', '/cart/items/update', $scope.items).then( response => {
+		})
 	}
 
 	HTTP.ajax('GET', '/getAll', false).then( response => {
@@ -54,9 +54,7 @@ app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', 'cartSRV
 					sum += parsePrice;
 					let fixedSum = sum.toFixed(2);
 					$scope.sum = fixedSum;
-				};
-				console.log($scope.items);
-				
+				};				
 			});
 		});
 	};
@@ -69,7 +67,6 @@ app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', 'cartSRV
 			quantity: item.quantity,
 			price: item.price
 		 };
-		 console.log(itemBody)
 		HTTP.ajax( 'PATCH', '/cart/items/pull', itemBody ).then( response => {
 			HTTP.ajax('GET', '/cart/items', false).then( response => {
 				$scope.items = response[0].items;

@@ -23,6 +23,10 @@ app.controller('loginController', [ '$scope', 'HTTP','$location','user', functio
 		$scope.someProduct = response[ Math.round( Math.random() * response.length ) -1 ];
 	});
 
+	HTTP.ajax('GET', '/order', false).then( response => {
+		$scope.allOrders = response.length;
+	});
+
 	const loc = location.href;
 	const error = loc.split('=')[1];
 	if (error == 1) {
