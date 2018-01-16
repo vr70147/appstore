@@ -59,6 +59,24 @@ app.controller('mainController', [ '$scope', 'HTTP', 'userSRV', 'user', 'cartSRV
 		});
 	};
 
+	$scope.removeAll = ( items ) => {
+		const cartItems = []
+		for( let i = 0 ; i < items.length ; i++ ) {
+			cartItems.push({
+				_id: items[i]._id,
+				name: items[i].name,
+				image: items[i].image,
+				quantity: items[i].quantity,
+				price: items[i].price
+			})
+		}
+		HTTP.ajax( 'PATCH', '/cart/items/pullall', cartItems ).then( response => {
+			HTTP.ajax('GET', '/cart/items', false).then( response => {
+				$scope.items = response[0].items;
+			});
+		});
+	}
+
 	$scope.removeItemFromCart = item => {
 		const itemBody = {
 			_id: item._id,

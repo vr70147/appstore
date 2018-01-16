@@ -258,8 +258,17 @@ li {
 .productsSection,
 .cartSection {
 	margin-top: 1%;
+	transition: 1s;
 }
 
+.cartSection.closeCart {
+	max-width: 0;
+	overflow: hidden;
+	border: none;
+}
+.cartSection.closeCart .panel{
+	opacity: 0;
+}
 .cartSection .cartCont {
 	overflow-y: scroll;
     overflow-x: hidden;
@@ -453,12 +462,12 @@ div#slider figure {
 .cartTitle h3 {
 	display: inline-block;
 }
-.cartTitle button {
-	float: right;
+.cartSection>button {
+	float: none;
 	background: none;
 	border: none;
 	outline: none;
-}
+} 
 .leftOrder, .rightOrder {
 	border: 1px solid #eaeaea;
 	height: auto;
@@ -503,4 +512,14 @@ div#slider figure {
 	vertical-align: middle;
 	margin-top: 20px;
 }
+.editPopupBg div h4 a {
+	color: #2980b9;
+	text-decoration: underline;
+}
 
+#cart-product-wrapper {
+	justify-content: space-between;
+}
+.removeAll {
+	float: right;
+}

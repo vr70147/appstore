@@ -18,6 +18,7 @@ const createOrder = MiddleWares.createOrder;
 const getOrders = MiddleWares.getOrders;
 const destroyCart = MiddleWares.destroyCart;
 const updateItemInCart = MiddleWares.updateItemInCart;
+const removeAll = MiddleWares.removeAll;
 
 router.get('/getAll', getProducts, ( req, res ) => { return res.send( req.data ) });
 
@@ -41,14 +42,14 @@ router.get('/cart/items', getItemFromCart, ( req, res ) => { return res.send( re
 
 router.patch('/cart/items/pull', removeItemFromCart, ( req, res ) => { return res.send( req.data ) });
 
+router.patch('/cart/items/pullall', removeAll, ( req, res ) => { return res.send( req.data ) });
+
 router.put('/cart', createCart, ( req, res ) => { return res.send( req.data ) });
 
 router.get('/cart', getCart, ( req, res ) => { return res.send( req.data ) });
 
-router.put('/order', createOrder, ( req, res ) => { return res.send( req.data ) });
+router.put('/order', createOrder, destroyCart, ( req, res ) => { return res.send( req.data ) });
 
 router.get('/order', getOrders, ( req, res ) => { return res.send( req.data ) });
-
-router.delete('/cart', destroyCart, ( req, res ) => { return res.send( req.data ) });
 
 module.exports = router;

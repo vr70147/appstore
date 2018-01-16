@@ -5,6 +5,10 @@ const CartItem = require('../models/product-from-cart');
 const Cart = require('../models/cart');
 const User = require('../models/user');
 const Order = require('../models/order');
+const pdf = require('pdfkit');
+const fs = require('fs');
+const async = require('async');
+
 
 const errorHandler = (err, res, cb ) => {
 	if(err) {
@@ -41,6 +45,7 @@ const updateProduct = ( req, res, next ) => {
 		productToUpdate.name = req.body.name;
 		productToUpdate.image = req.body.image;
 		productToUpdate.price = req.body.price;
+		productToUpdate.category = req.body.category;
 		productToUpdate.save(( err, data )=> {
 				if( err ) console.log(err);
 				return res.json(data);
@@ -86,8 +91,12 @@ const addItemToCart = ( req, res, next ) => {
 
 };
 const removeItemFromCart = ( req, res, next ) => {
-	console.log(req.user.cart);
 	Cart.update( { _id: req.user.cart }, { $pull: { items: req.body } },( err, data ) =>
+		errorHandler( err, res, () => successHandler( req, data, next ) ));
+};
+
+const removeAll = ( req, res, next ) => {
+	Cart.update( { _id: req.user.cart }, { $pullAll: { items: req.body } },( err, data ) =>
 		errorHandler( err, res, () => successHandler( req, data, next ) ));
 };
 
@@ -107,16 +116,35 @@ const getCart = ( req, res, next ) => {
 	});
 };
 const getItemFromCart = ( req, res, next ) => {
-	Cart.find({_id: req.user.cart }, ( err, carts ) => {
-		errorHandler(err, res, () => successHandler(req, carts, next));
-	});
+	if( req.user.cart ) {
+		Cart.find({_id: req.user.cart }, ( err, carts ) => {
+			errorHandler(err, res, () => successHandler(req, carts, next));
+		});	
+	}
+	
 }; 
 const createOrder = ( req, res, next ) => {
 	const newOrder = new Order( req.body );
 	newOrder.save(( err, data ) => {
-		if ( err ) return res.json( err )
-		errorHandler(err, res, () => successHandler(req, data, next));
-		return next();
+		Cart.find({_id: req.user.cart}, ( err, cart ) => {
+			const receipt = new pdf;
+			let count = 1;
+			receipt.pipe(fs.createWriteStream('public/receipts/receipt_no-'+ cart[0]._id +'.pdf', {flag: 'a', encoding: 'utf8'}));
+				receipt
+				.fontSize(15)
+				.text(	'Receipt for order no\' ' + cart[0]._id + '\n' +
+						'________________________________________________' + '\n', 30, 30);
+				for( let i = 0 ; i < cart[0].items.length ; i++ ){
+					receipt.moveDown();	
+					receipt.text('\n' + cart[0].items[i].name + ' X' + cart[0].items[i].quantity + ' price: ' + cart[0].items[i].price + 'ILS' + '\n')
+				} 
+			receipt.end();
+			data.cart = cart[0]._id
+			if ( err ) return res.json( err )
+				errorHandler(err, res, () => successHandler(req, data, next));
+		
+		}); 
+		
 	});
 };
 
@@ -129,9 +157,10 @@ const getOrders = ( req, res, next ) => {
 const destroyCart = (req, res, next ) => {
 	Cart.remove({ _id: req.user.cart }, ( err, removedCart ) => {
 		User.update({_id: req.user._id},{ $unset : { cart: req.user.cart } }, ( err, data ) => {
-			req.user.cart = '';
+			req.session.passport.user.cart = null;
+			return next();
 		})
-		return next();
+		
 	});
 };
 
@@ -156,7 +185,8 @@ const MiddleWares = {
 	createOrder,
 	getOrders,
 	destroyCart,
-	updateItemInCart
+	updateItemInCart,
+	removeAll
 };
 
 module.exports = MiddleWares;

@@ -68,6 +68,22 @@
 					<h6 ng-if="error">Please provide a valid Visa number!</h6>
 					<button class="btn btn-primary loginBtn" ng-click="submitOrder()">Order</button>
 				</form>
+				<div class="editPopupBg" ng-if="validateDateShipping">
+					<div>
+						<button class="closePopup"><i class="fa fa-times-circle" aria-hidden="true"
+							ng-click="closePopup1()"></i></button>
+						<h2>All the delivery are occupied, please pick another date</h2>
+					</div>
+				</div>
+				<div class="editPopupBg" ng-if="orderSuccess">
+					<div>
+						<button class="closePopup"><i class="fa fa-times-circle" aria-hidden="true"
+							ng-click="closePopup2()"></i></button>
+						<h2>Your order complete successfuly!</h2>
+						<h4>To download the receipt press <a href={{receiptName}} target="_blank">here</a></h4>
+						<button class="btn btn-primary loginBtn" ng-click="returnToLogin()">Confirm</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

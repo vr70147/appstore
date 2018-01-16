@@ -1,5 +1,9 @@
-app.controller('orderController', [ '$scope', 'HTTP', 'userSRV','user', function( $scope, HTTP, userSRV, user ) {
+app.controller('orderController', [ '$scope', 'HTTP', 'userSRV','user', '$timeout', '$location', function( $scope, HTTP, userSRV, user, $timeout, $location ) {
 
+	if(user.cart == null) {
+		return $location.path('/');
+	}
+	
 	$scope.items = [];
 	HTTP.ajax('GET', '/cart/items', false).then( response => {
 		angular.forEach(response[0].items, (value, key) => {
@@ -17,7 +21,7 @@ app.controller('orderController', [ '$scope', 'HTTP', 'userSRV','user', function
 		};
 	});
 	$scope.city = user.city;
-		$scope.street = user.street;
+	$scope.street = user.street;
 	$scope.submitOrder = () => {
 		const order = {
 			user: user._id,
@@ -46,9 +50,9 @@ app.controller('orderController', [ '$scope', 'HTTP', 'userSRV','user', function
 		  if(isValid) {
 		  	$scope.error = false;
 		    HTTP.ajax('PUT', '/order', order).then( response => {
-				HTTP.ajax('delete', '/cart', '').then(response => {
-
-				})
+		    	console.log(response); 
+		    	$scope.receiptName = "receipts/receipt_no-" + response.cart + ".pdf";
+		    	$scope.orderSuccess = true;
 			})
 		  } else {
 		     $scope.error = true;
@@ -57,20 +61,38 @@ app.controller('orderController', [ '$scope', 'HTTP', 'userSRV','user', function
 
 		};
 		$scope.checkDate = (shippingDate) => {
-			// HTTP.ajax('GET', '/order', false).then( response => {
-			// let x;
-			// let count = 0;
-			// for(let i = 0 ; i < response.length ; i++) {
-			// 	x = response[i].dateOfOrder;
-			// 	y = x.split("T")[0];
-			// 	if(y === shippingDate ){
-			// 		count++
-			// 	}
-			// } 
-			
-			// const y = x.split("T")[0]
-				console.log(shippingDate);
-			// });
+			HTTP.ajax('GET', '/order', false).then( response => {
+				let x;
+				let count = 0;
+				let date = JSON.stringify(shippingDate);
+				let splitDate = date.split("T")[0];
+				let splitDateSubstr = splitDate.substr(1);
+				for(let i = 0 ; i < response.length ; i++) {
+					x = response[i].dateOfDelivery;
+					y = x.split("T")[0];
+					if(y === splitDateSubstr ){
+						count++
+					}
+				} 
+				if(count >= 3) {
+					$scope.validateDateShipping = true;
+					$timeout(() => {
+						$scope.validateDateShipping = false;
+					},3500)
+				}
+			});
+		}
+		$scope.closePopup1 = () => {
+			$scope.validateDateShipping = false;
+			$scope.orderSuccess = false;
+		}
+		$scope.closePopup2 = () => {
+			$scope.validateDateShipping = false;
+			$scope.orderSuccess = false;
+			return $location.path('/');
+		}
+		$scope.returnToLogin = () => {
+			return $location.path('/');
 		}
 }]);
 

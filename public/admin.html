@@ -1,4 +1,4 @@
-<div class="container-fluid">
+	<div class="container-fluid">
 	<div class="col-md-12 col-sm-12">
 		<div class="row">
 		<section class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form fixedForm">
@@ -54,21 +54,24 @@
 		              </tbody>
 		            </table>
 		          </div>     
-      			</div>
-      		</section>
-      		<div class="editPopupBg" ng-if="editPopup">
+	  			</div>
+	  		</section>
+	  		<div class="editPopupBg" ng-if="editPopup">
 	      		<div>
 	      			<button class="closePopup"><i class="fa fa-times-circle" aria-hidden="true" ng-click="closePopup()"></i></button>
 	      			<h2>Edit Products</h2>
 		      		<input type="text" ng-model="productDetails.name" placeholder="Enter name" required />
 					<input type="number" ng-model="productDetails.price" placeholder="Enter price" required/>
 					<input type="text" ng-model="productDetails.image" placeholder="Enter image url" required/>
+					<select ng-model="productDetails.category" required>
+						<option ng-selected="productDetails.category == option._id"  ng-repeat="option in options" value="{{option._id}}">{{option.name}}</option>
+					</select>
 					<br>
 					<button class="loginBtn btn btn-primary" ng-click="updateProduct(productDetails)">
 						Update product
 					</button>
 	      		</div>
 	      	</div>
-      	</div>
+	  	</div>
 	</div>
-</div>
+	</div>

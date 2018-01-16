@@ -2,7 +2,7 @@ app.controller('loginController', [ '$scope', 'HTTP','$location','user', functio
 	$scope.form = true
 		if (user) {
 			$scope.form = false
-			if (user.cart) {
+			if (user.cart) {  	
 				HTTP.ajax('GET', '/cart', false).then( response => {
 					const date = response[0].date;
 					$scope.date = date.split("T")[0];
@@ -37,6 +37,7 @@ app.controller('loginController', [ '$scope', 'HTTP','$location','user', functio
 		$scope.error = '';
 	};
 	$scope.createCart = () => {
+		console.log('creating cart from controller')
 		HTTP.ajax('PUT', '/cart', '').then( response => {
 			return $location.path('/main');
 		});

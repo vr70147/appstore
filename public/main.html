@@ -1,5 +1,5 @@
-<div class="container-fluid">
-   <div class="row">
+<div class="container-fluid"> 
+   <div id="cart-product-wrapper" class="row">
       <section class="col-md-12 welcomeTitle" >
          <div class="col-md-8 float-left ul">
             <ul ng-repeat="category in categories">
@@ -30,13 +30,14 @@
          </div>
       </section>
       <section class="col-md-4 col-sm-12 cartSection">
+         <button><i toggle-cart class="fa fa-times-circle" aria-hidden="true"></i></button>
          <div class="panel panel-info">
             <div class="panel-heading">
                <div class="panel-title">
                   <div class="row">
                      <div class="col-md-12 cartTitle">
                         <h3><span class="glyphiscon glyphicon-shopping-cart"></span>My shopping list</h3>
-                        <button><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                     <button class="btn btn-danger removeAll" ng-if="removeAll" ng-click="removeAll(items)">Remove all</button>
                      </div>
                   </div>
                </div>

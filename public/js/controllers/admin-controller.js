@@ -3,6 +3,11 @@ app.controller('adminController', ['$scope', 'HTTP','userSRV', 'user','$timeout'
 
 	$scope.remove = (product) => {
 		$scope.productId = product._id;
+		HTTP.ajax('DELETE', '/delproduct/' + $scope.productId, false).then( response => {
+			HTTP.ajax('GET', '/getAll', false).then( response => {
+				$scope.products = response;
+			});
+		})
 	}
 
 	$scope.edit = (product) => {
@@ -11,20 +16,22 @@ app.controller('adminController', ['$scope', 'HTTP','userSRV', 'user','$timeout'
 		$scope.productDetails = {
 			name: product.name,
 			price: product.price,
-			image: product.image		}
+			image: product.image,
+			category: product.category._id
+		}
+
 	}
 	$scope.updateProduct = (items) => {
 		const itemsToSend = {
 			name: items.name,
 			image: items.image,
-			price: items.price
+			price: items.price,
+			category: items.category
 		};
 
 		HTTP.ajax('PATCH', '/editproduct/' + $scope.productId, itemsToSend).then( response => {
 			HTTP.ajax('GET', '/getAll', false).then( response => {
-				$scope.items = [];
 				$scope.products = response;
-				$scope.items.push( response );		
 			});
 			$scope.editPopup = false;
 		})
@@ -42,15 +49,14 @@ app.controller('adminController', ['$scope', 'HTTP','userSRV', 'user','$timeout'
 		});
 	});
 	HTTP.ajax('GET', '/getAll', false).then( response => {
-		$scope.items = [];
 		$scope.products = response;
-		console.log(response);
-		$scope.items.push( response );		
 	});
-	$scope.items = [];
+	
 	$scope.submitProducts = () => {
 		HTTP.ajax('PUT','/addproduct',$scope.product ).then( response => {
-			$scope.items.push( response );
+			HTTP.ajax('GET', '/getAll', false).then( response => {
+				$scope.products = response;
+			});
 		})
 	};
 
