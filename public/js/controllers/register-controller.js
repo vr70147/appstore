@@ -19,7 +19,6 @@ app.controller('registerController',[ '$scope', 'HTTP', '$location', function( $
 		$scope.errors = [];
 		HTTP.ajax('POST','/users/register', $scope.user ).then( response => {
 			angular.forEach(response, ( value, key ) => {
-				console.log(value);
 				for ( let i = 0 ; i < value.length ; i++ ) {
 					if ( value[i].param === "city" || value[i].param === "street" || value[i].param === "fname" || value[i].param === "lname" )
 					$scope.errors.push(value[i].msg);

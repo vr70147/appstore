@@ -24,9 +24,6 @@ mongoose.connect('mongodb://localhost/store', err => { err ? console.log('could 
 // configurations..
 
 passport.use('local', new LocalStrategy(auth.login));
-// passport.use('local-signup', new LocalStrategy({
-//   passReqToCallback: true
-// }, auth.register));
 passport.serializeUser(auth.serializeUser);
 passport.deserializeUser(auth.deserializeUser);
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -67,7 +64,6 @@ app.use(expressValidator({
     };
   }
 }));
-// app.use('/#!/main', auth.validatedUser, routes);
 app.use('/', routes);
 app.use('/users', users);
 

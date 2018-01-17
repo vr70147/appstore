@@ -1,0 +1,8 @@
+{"_id":{"$oid":"5a1ae04a3b12cc5d98a1f0ff"},"name":"Milk \u0026 Eggs"}
+{"_id":{"$oid":"5a21a1e92c60352da83bec19"},"name":"Salads","__v":0}
+{"_id":{"$oid":"5a2ba35fdbd4a52620b5c062"},"name":"meat","__v":0}
+{"_id":{"$oid":"5a59140cf3dc2b1b24d3af10"},"name":"Electricity","__v":0}
+{"_id":{"$oid":"5a5914f1911a9434148a1000"},"name":"Bakery","__v":0}
+{"_id":{"$oid":"5a5915b53e10df07983e4591"},"name":"Organic products","__v":0}
+{"_id":{"$oid":"5a591678354b942658ded41b"},"name":"Freeze products","__v":0}
+{"_id":{"$oid":"5a5e73bc2e83c5424c434b4d"},"name":"Cans","__v":0}

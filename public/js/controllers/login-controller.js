@@ -31,13 +31,11 @@ app.controller('loginController', [ '$scope', 'HTTP','$location','user', functio
 	const error = loc.split('=')[1];
 	if (error == 1) {
 		$scope.error = "username or password incorrect";
-		console.log($scope.error);
 	}
 	$scope.submitLogin = () => {
 		$scope.error = '';
 	};
 	$scope.createCart = () => {
-		console.log('creating cart from controller')
 		HTTP.ajax('PUT', '/cart', '').then( response => {
 			return $location.path('/main');
 		});
